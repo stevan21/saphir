@@ -2314,7 +2314,7 @@
     }
 
     .intro.est-pret .intro-rouleau {
-      animation: rouler-metiers 2s cubic-bezier(0.76, 0, 0.24, 1) 0.4s forwards;
+      animation: rouler-metiers 2.5s cubic-bezier(0.76, 0, 0.24, 1) 0.5s forwards;
     }
 
     /* Chaque mot tient en place, puis le rouleau avance d'un cran. */
@@ -2345,7 +2345,7 @@
       width: 0;
       height: 100%;
       background: linear-gradient(90deg, var(--gold-dark), var(--gold-bright));
-      transition: width 1.8s cubic-bezier(0.45, 0, 0.15, 1);
+      transition: width 2.3s cubic-bezier(0.45, 0, 0.15, 1);
     }
 
     .intro.est-pret .intro-jauge span { width: 100%; }
@@ -2366,6 +2366,80 @@
       .intro-bas { padding-top: 34px; gap: 24px; }
       .intro-jauge { width: 150px; }
       .intro-metiers { font-size: 0.72rem; letter-spacing: 0.16em; }
+    }
+
+
+    /* --- Orbites d'atome : elles se dessinent, puis tournent lentement --- */
+    .intro-orbites {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: min(96vw, 820px, 96vh);
+      height: min(96vw, 820px, 96vh);
+      transform: translate(-50%, -50%);
+      overflow: visible;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.8s ease, transform 0.7s cubic-bezier(0.55, 0, 0.55, 0.2);
+    }
+    .intro.est-pret .intro-orbites { opacity: 1; }
+    .intro.est-sortie .intro-orbites { opacity: 0; transform: translate(-50%, -50%) scale(1.18); transition-duration: 0.45s, 0.6s; }
+
+    /* Origine au centre du dessin (0,0) : les orbites sont symétriques */
+    .intro-orbites-tour {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: intro-tour 16s linear infinite;
+    }
+    @keyframes intro-tour { to { transform: rotate(360deg); } }
+
+    .intro-orbite path {
+      fill: none;
+      stroke: rgba(212, 175, 55, 0.42);
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      transition: stroke-dashoffset 1.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .intro.est-pret .intro-orbite path { stroke-dashoffset: 0; }
+    .intro.est-pret .intro-orbite:nth-child(2) path { transition-delay: 0.15s; }
+    .intro.est-pret .intro-orbite:nth-child(3) path { transition-delay: 0.3s; }
+
+    .intro-orbite circle {
+      fill: var(--gold-bright);
+      filter: drop-shadow(0 0 6px rgba(244, 211, 94, 0.95));
+      opacity: 0;
+      transition: opacity 0.6s ease 0.9s;
+    }
+    .intro.est-pret .intro-orbite circle { opacity: 1; }
+
+    /* --- Blason plus présent, avec une lueur qui respire --- */
+    .intro-icone { width: 92px; height: 92px; border-radius: 24px; }
+    .intro.est-pret .intro-icone { animation: intro-lueur 2.2s ease-in-out 0.9s infinite; }
+    @keyframes intro-lueur {
+      0%, 100% { box-shadow: 0 18px 40px -14px rgba(0, 0, 0, 0.8), 0 0 0 0 rgba(212, 175, 55, 0); }
+      50% { box-shadow: 0 18px 40px -14px rgba(0, 0, 0, 0.8), 0 0 38px 6px rgba(212, 175, 55, 0.38); }
+    }
+
+    /* --- Devise --- */
+    .intro-devise {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.7s ease 0.55s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.55s;
+    }
+    .intro.est-pret .intro-devise { opacity: 1; transform: none; }
+    .intro-bas { gap: 24px; }
+
+    @media (max-width: 600px) {
+      .intro-icone { width: 70px; height: 70px; border-radius: 18px; }
+      .intro-orbites { width: 150vw; height: 150vw; }
+      .intro-devise { font-size: 0.66rem; letter-spacing: 0.28em; }
     }
 
     /* ---------- MODAL CATALOGUE ---------- */
@@ -3998,18 +4072,23 @@
   <script>
     // Pose le voile avant le premier rendu : sans ce script en tête, la page
     // apparaîtrait une fraction de seconde avant d'être recouverte.
-    // Trois cas où l'on n'ouvre pas de voile du tout :
-    //  - le visiteur arrive sur une ancre précise (#contact…), donc en lien direct ;
-    //  - il a demandé de réduire les animations dans son système ;
+    // Il se joue à chaque arrivée sur le site, même sur une ancre (#contact…) :
+    // la page rejoint alors la section demandée une fois le voile levé.
+    // Deux cas où l'on n'ouvre pas de voile du tout :
+    //  - le visiteur a demandé de réduire les animations dans son système ;
     //  - le JavaScript est désactivé, auquel cas ce script ne s'exécute pas
     //    et le voile reste masqué par défaut en CSS — la page n'est jamais bloquée.
     (function () {
-      var lienDirect = window.location.hash.length > 1;
       var mouvementReduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      if (!lienDirect && !mouvementReduit) {
-        document.documentElement.classList.add('intro-active');
+      if (mouvementReduit) return;
+      document.documentElement.classList.add('intro-active');
+      // Le navigateur ne doit pas filer seul vers l'ancre sous le voile :
+      // on la met de côté, le script d'ouverture la rejoint puis la remet.
+      if (window.location.hash.length > 1) {
+        window.__ancreIntro = window.location.hash;
+        history.replaceState(null, '', window.location.pathname + window.location.search);
       }
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     })();
   </script>
 </head>
@@ -4021,6 +4100,15 @@
     <div class="intro-volet intro-volet-bas"></div>
     <div class="intro-halo"></div>
     <div class="intro-couture"></div>
+
+    <!-- Trois orbites d'atome qui se dessinent, chacune avec son électron -->
+    <svg class="intro-orbites" viewBox="-200 -200 400 400" aria-hidden="true" focusable="false">
+      <g class="intro-orbites-tour">
+        <g class="intro-orbite"><path pathLength="100" d="M -190 0 A 190 62 0 1 0 190 0 A 190 62 0 1 0 -190 0"/><circle r="3.2"><animateMotion dur="2.6s" repeatCount="indefinite" path="M -190 0 A 190 62 0 1 0 190 0 A 190 62 0 1 0 -190 0"/></circle></g>
+        <g class="intro-orbite" transform="rotate(60)"><path pathLength="100" d="M -190 0 A 190 62 0 1 0 190 0 A 190 62 0 1 0 -190 0"/><circle r="3.2"><animateMotion dur="3.1s" begin="-0.8s" repeatCount="indefinite" path="M -190 0 A 190 62 0 1 0 190 0 A 190 62 0 1 0 -190 0"/></circle></g>
+        <g class="intro-orbite" transform="rotate(120)"><path pathLength="100" d="M -190 0 A 190 62 0 1 0 190 0 A 190 62 0 1 0 -190 0"/><circle r="3.2"><animateMotion dur="2.8s" begin="-1.6s" repeatCount="indefinite" path="M -190 0 A 190 62 0 1 0 190 0 A 190 62 0 1 0 -190 0"/></circle></g>
+      </g>
+    </svg>
 
     <div class="intro-marque">
       <div class="intro-haut">
@@ -4036,6 +4124,7 @@
       </div>
 
       <div class="intro-bas">
+        <p class="intro-devise">Service &middot; Mission &middot; Gloire</p>
         <div class="intro-metiers">
           <div class="intro-rouleau">
             <span>Solaire thermique</span>
@@ -5017,6 +5106,9 @@
     const liensSection = Array.from(navLinks.querySelectorAll('.nav-item > a'));
     const navLarge = window.matchMedia('(min-width: 1025px)');
     let dernierY = window.scrollY;
+    // Après un saut programmé (arrivée sur une ancre), les images qui se chargent
+    // décalent un peu la page : ce n'est pas une descente, la navigation reste.
+    let graceNav = 0;
     let lienActif = null;
     let survol = false;
 
@@ -5025,6 +5117,7 @@
     function surDefilement() {
       const y = window.scrollY;
       header.classList.toggle('scrolled', y > 40);
+      if (Date.now() < graceNav) dernierY = y;
       if (!menuOuvert()) {
         if (y > dernierY + 6 && y > 320) header.classList.add('est-cache');
         else if (y < dernierY - 6 || y <= 320) header.classList.remove('est-cache');
@@ -5746,6 +5839,22 @@
       if (intro) intro.remove();
     }
 
+    // Arrivée sur une ancre (#contact…) : la page saute à la section pendant
+    // que les volets la couvrent encore ; ils s'ouvrent directement dessus.
+    function rejoindreAncre() {
+      const ancre = window.__ancreIntro;
+      if (!ancre) return;
+      window.__ancreIntro = null;
+      history.replaceState(null, '', ancre);
+      let cible = null;
+      try { cible = document.querySelector(decodeURIComponent(ancre)); } catch (e) { cible = null; }
+      if (!cible) return;
+      cible.scrollIntoView({ behavior: 'instant', block: 'start' });
+      // Pour la navigation, ce saut n'est pas une descente : elle reste affichée
+      dernierY = window.scrollY;
+      graceNav = Date.now() + 2500;
+    }
+
     // Compteur 0 → 100 calé sur la jauge. L'amortissement en fin de course
     // suit celui de la barre : les deux arrivent ensemble.
     function compterJusquACent(duree) {
@@ -5775,18 +5884,18 @@
       // se remplit, puis les volets s'écartent sur le hero déjà en mouvement.
       requestAnimationFrame(() => {
         intro.classList.add('est-pret');
-        compterJusquACent(1800);
+        compterJusquACent(2300);
       });
 
-      setTimeout(() => intro.classList.add('est-sortie'), 2350);
-      setTimeout(() => intro.classList.add('est-ouvert'), 2600);
+      setTimeout(() => { intro.classList.add('est-sortie'); rejoindreAncre(); }, 2900);
+      setTimeout(() => intro.classList.add('est-ouvert'), 3150);
       // Le hero s'anime pendant que les volets s'écartent : les deux
       // mouvements se recouvrent au lieu de se suivre.
-      setTimeout(lancerAnimations, 2800);
-      setTimeout(leverLeVoile, 3600);
+      setTimeout(lancerAnimations, 3350);
+      setTimeout(leverLeVoile, 4150);
 
       // Filet de sécurité : quoi qu'il arrive en amont, le voile se lève.
-      setTimeout(leverLeVoile, 6000);
+      setTimeout(leverLeVoile, 7000);
     } else {
       lancerAnimations();
     }

@@ -1,0 +1,118 @@
+VIDÉO DE FOND DU HERO — SAPHIR M. GROUPE SA
+===========================================
+
+EN PLACE ACTUELLEMENT : UN PLAN DE REMPLACEMENT
+-----------------------------------------------
+Les fichiers présents dans ce dossier ne sont pas à vous. C'est un plan de
+drone au-dessus d'une toiture photovoltaïque, pris sur Pexels sous licence
+libre (utilisation commerciale autorisée, sans attribution obligatoire) :
+
+    https://www.pexels.com/video/solar-panels-on-rooftop-2249554/
+
+Il est là pour montrer le rendu. À remplacer par vos propres images de
+chantier dès que vous en avez : même noms de fichiers, rien d'autre à
+changer dans le code.
+
+Le plan a été retaillé en boucle aller-retour de 16 secondes (8 s à
+l'endroit, puis les mêmes 8 s à l'envers) pour que la reprise ne saute
+pas à l'œil. Commandes exactes plus bas, section ENCODAGE.
+
+
+LES FICHIERS ATTENDUS
+---------------------
+Deux fichiers, nommés exactement :
+
+    installation.webm   (VP9/AV1 — servi en priorité)
+    installation.mp4    (H.264 — pour Safari et les navigateurs anciens)
+
+Le site lit le .webm s'il est disponible, sinon le .mp4. Si aucun des deux
+n'est présent, l'image « poster » définie dans index.html reste affichée :
+la page ne casse pas.
+
+
+CE QUI MARCHE BIEN EN FOND
+--------------------------
+- Un plan large, fixe ou à mouvement très lent : pose de capteurs sur une
+  toiture, travelling le long d'une rangée de panneaux, vue drone d'une
+  installation terminée.
+- Le titre et les boutons se posent par-dessus. Un plan agité, une caméra
+  à l'épaule ou un sujet qui traverse le cadre rendent le texte illisible.
+- 10 à 20 secondes, avec un début et une fin proches pour que la boucle
+  ne saute pas visiblement.
+- Pas de son : la vidéo est lue en muet, c'est la condition pour que les
+  navigateurs acceptent la lecture automatique.
+- Pas de texte ni de logo incrusté dans l'image.
+
+Le hero applique par-dessus un voile bleu nuit assez dense (voir la règle
+.hero-bg::after dans index.html). Un rush très coloré ressortira donc
+atténué — c'est voulu, c'est ce qui garde le titre lisible. Privilégier un
+plan clair et contrasté, qui supporte d'être assombri.
+
+
+ENCODAGE
+--------
+Viser moins de 3 Mo par fichier. Au-delà, le hero met trop longtemps à
+s'animer sur une connexion mobile. Les deux fichiers actuels font 2,2 et
+2,9 Mo.
+
+1280 px de large suffisent : la vidéo est affichée à 38 % d'opacité sous
+un voile bleu nuit, personne n'y lira du détail. Passer en 1920 double le
+poids sans gain visible.
+
+Commandes utilisées pour les fichiers en place, à partir d'un rush
+`source.mp4`. Elles produisent la boucle aller-retour :
+
+    ffmpeg -t 8 -i source.mp4 -an \
+      -filter_complex "[0:v]scale=1280:-2,fps=24,split[a][b];[b]reverse[r];[a][r]concat=n=2:v=1[v]" \
+      -map "[v]" -c:v libx264 -crf 32 -preset slow -pix_fmt yuv420p \
+      -movflags +faststart installation.mp4
+
+    ffmpeg -t 8 -i source.mp4 -an \
+      -filter_complex "[0:v]scale=1280:-2,fps=24,split[a][b];[b]reverse[r];[a][r]concat=n=2:v=1[v]" \
+      -map "[v]" -c:v libvpx-vp9 -crf 47 -b:v 0 -row-mt 1 -deadline good \
+      -cpu-used 3 -pix_fmt yuv420p installation.webm
+
+  -t 8 AVANT -i          coupe la SOURCE à 8 s. Placé après -i, il couperait
+                         la sortie et supprimerait la moitié « retour ».
+  -an                    supprime la piste audio
+  reverse + concat       colle le plan à l'envers derrière le plan à l'endroit
+  -crf                   qualité : augmenter le chiffre allège le fichier
+                         (l'échelle diffère entre x264 et VP9, d'où 32 et 47)
+  -movflags +faststart   permet au .mp4 de démarrer avant d'être téléchargé
+
+Pour couper ailleurs qu'au début, ajouter -ss avant -t :
+    ffmpeg -ss 00:00:32 -t 8 -i source.mp4 ...
+
+Si le plan boucle déjà naturellement (début et fin identiques), retirer
+tout le -filter_complex et remplacer par : -vf "scale=1280:-2,fps=24"
+
+
+IMAGE POSTER
+------------
+`poster.jpg` est la toute première image de installation.mp4 : la bascule
+entre le poster et le démarrage de la vidéo est donc invisible. En
+changeant de vidéo, régénérer le poster de la même façon :
+
+    ffmpeg -i installation.mp4 -vframes 1 -q:v 3 poster.jpg
+
+Le nom est référencé deux fois dans index.html (attribut `poster` de la
+balise <video>, et la balise <img> de repli juste en dessous). Garder le
+même nom évite d'y toucher.
+
+
+PLUSIEURS VIDÉOS
+----------------
+S'il y a plusieurs rushes (thermique, photovoltaïque…), le plus simple est
+d'en garder un seul en fond de hero et de placer les autres dans les
+sections #thermique et #photovoltaique, à la place des photos .pole-media.
+Même principe : balise <video muted loop playsinline> avec un poster.
+
+
+QUAND LA VIDÉO NE SE LANCE PAS
+------------------------------
+C'est prévu et volontaire dans trois cas (voir le bloc « VIDÉO DE FOND »
+dans le script en bas de index.html) :
+- le visiteur a activé la réduction des animations dans son système ;
+- son navigateur signale une connexion 2G ou le mode économie de données ;
+- le navigateur refuse la lecture automatique.
+Dans tous ces cas le poster s'affiche seul, et la page reste identique.

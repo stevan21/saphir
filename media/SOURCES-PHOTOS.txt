@@ -1,0 +1,65 @@
+PROVENANCE DES PHOTOS — SAPHIR M. GROUPE SA
+==========================================
+
+1. PHOTOS DE CHANTIER REPRISES DE saphirmgroupe.ch
+--------------------------------------------------
+    chantier-sanitaire.webp        réseau sanitaire et vannes
+    chantier-chaufferie.webp       collecteur et circulateurs
+    chantier-local-technique.webp  local technique, vase d'expansion
+    chantier-pompe-chaleur.webp    local technique, générateur
+
+Ces deux-là figurent aussi sur saphirmgroupe.ch, mais ce sont des photos
+Pexels, pas des chantiers Saphir :
+    toiture-photovoltaique.webp
+    conduits-inox.webp
+
+
+2. PHOTOS D'ILLUSTRATION (banque d'images libre)
+------------------------------------------------
+Toutes en licence CC0 ou domaine public : usage commercial autorisé,
+aucune mention d'auteur obligatoire. Ce ne sont PAS des chantiers Saphir :
+les légendes du site décrivent l'activité, jamais « nos réalisations ».
+À remplacer par vos propres photos dès que possible (même nom de fichier,
+rien d'autre à changer dans le code).
+
+    illus-chauffe-eau-toiture.webp  (recadrée pour masquer la marque du ballon)
+        CC0 — Shiftchange, Wikimedia Commons
+        https://commons.wikimedia.org/w/index.php?curid=41356066
+
+    illus-pose-panneaux.webp
+        CC0 — rawpixel
+        https://www.rawpixel.com/image/5906768/photo-image-public-domain-person-free
+
+    illus-releve-site.webp, illus-chantier.webp, illus-mise-en-oeuvre.webp
+        Domaine public — USAID Mozambique (photos Jason Florio), Flickr
+        https://www.flickr.com/photos/62256332@N08/54347806490
+        https://www.flickr.com/photos/62256332@N08/54347688593
+        https://www.flickr.com/photos/62256332@N08/54346512107
+
+    illus-chateau-eau.webp  (fond du bandeau avant le devis)
+        CC0 — IAfrica76 (Innovation Africa), Wikimedia Commons
+        https://commons.wikimedia.org/w/index.php?curid=163952899
+
+
+OÙ ELLES APPARAISSENT
+---------------------
+    Métier 01, thermique      vignette illus-chauffe-eau-toiture
+    Métier 02, photovoltaïque vignette illus-pose-panneaux
+    Méthode                   bande « terrain » : les trois illus-* USAID
+    Avant « Demander un devis » bandeau illus-chateau-eau
+
+
+3. IMAGES DU CATALOGUE (media/catalogue/)
+-----------------------------------------
+Extraites de votre propre dossier technique (media/technique.pdf), pages 5
+à 22, puis recadrées. Une image par fiche, nommée d'après la référence :
+the-01.webp = THE-01, pv-02.webp = PV-02, etc.
+
+La fiche POM-08 (pompes et surpresseurs) reprend la photo de chantier
+chantier-chaufferie.webp, faute d'image de pompe dans le dossier.
+
+Attention : plusieurs de ces images semblent venir de sites de fournisseurs
+(la marque « Thermador » sur le kit solaire de la page 11, « JRG » gravé
+sur un raccord). Si le dossier technique est diffusé avec, pas de
+changement ; sinon, vérifier les droits ou les remplacer par vos photos.
+Pour changer une image : même nom de fichier, rien à modifier dans le code.

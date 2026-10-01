@@ -1,0 +1,212 @@
+/* Pages légales (CGU, confidentialité) : mêmes couleurs et polices que le site,
+   sans dégradé ni bouton en pilule. Sombre par défaut, clair si le visiteur
+   l'a choisi sur le site (préférence « theme » du navigateur). */
+
+:root {
+  --fond: #081424;
+  --surface: #10233b;
+  --bord: rgba(255, 255, 255, 0.09);
+  --texte: #e3eaf3;
+  --texte-doux: #9cb0c6;
+  --titre: #f1f5fa;
+  --jaune: #ffcc00;
+  --jaune-texte: #ffcc00;
+  --bleu-nuit: #0a1a2f;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --fond: #f7f9fc;
+  --surface: #ffffff;
+  --bord: #e3e8ef;
+  --texte: #0a1a2f;
+  --texte-doux: #4a5c72;
+  --titre: #0a1a2f;
+  --jaune-texte: #8a6a00;
+  color-scheme: light;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Barlow', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--texte);
+  background: var(--fond);
+}
+
+a { color: var(--jaune-texte); }
+a:hover { text-decoration: none; }
+
+/* --- En-tête --- */
+.entete {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bleu-nuit);
+  border-bottom: 1px solid rgba(255, 204, 0, 0.25);
+}
+
+.entete-contenu {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.marque {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.15rem;
+  text-decoration: none;
+}
+
+.marque img {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #1c2340;
+  border: 1px solid rgba(255, 204, 0, 0.35);
+}
+
+.retour {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--jaune);
+  color: var(--bleu-nuit);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.retour:hover { background: #ffe066; }
+
+/* --- Contenu --- */
+main {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 56px 20px 72px;
+}
+
+.sur-titre {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--jaune-texte);
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-family: 'Barlow Semi Condensed', 'Barlow', sans-serif;
+  font-size: clamp(2rem, 6vw, 2.9rem);
+  line-height: 1.1;
+  color: var(--titre);
+  margin-bottom: 12px;
+}
+
+.mise-a-jour {
+  color: var(--texte-doux);
+  font-size: 0.95rem;
+  margin-bottom: 36px;
+}
+
+.resume {
+  background: var(--surface);
+  border: 1px solid var(--bord);
+  border-left: 3px solid var(--jaune);
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-bottom: 40px;
+}
+
+.resume p + p, .resume ul { margin-top: 8px; }
+
+h2 {
+  font-family: 'Barlow Semi Condensed', 'Barlow', sans-serif;
+  font-size: 1.45rem;
+  line-height: 1.25;
+  color: var(--titre);
+  margin: 40px 0 12px;
+  scroll-margin-top: 90px;
+}
+
+h3 {
+  font-size: 1.1rem;
+  color: var(--titre);
+  margin: 22px 0 6px;
+}
+
+p + p { margin-top: 12px; }
+ul { padding-left: 22px; margin: 10px 0; }
+li + li { margin-top: 6px; }
+strong { color: var(--titre); }
+
+.fiche {
+  background: var(--surface);
+  border: 1px solid var(--bord);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 12px 0;
+}
+
+.fiche p + p { margin-top: 4px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 0.97rem;
+}
+
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--bord);
+}
+
+th { color: var(--titre); font-weight: 700; }
+
+/* --- Pied de page --- */
+.pied {
+  border-top: 1px solid var(--bord);
+  background: var(--bleu-nuit);
+  color: #9cb0c6;
+  font-size: 0.92rem;
+}
+
+.pied-contenu {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pied a { color: #ffcc00; text-decoration: none; }
+.pied a:hover { text-decoration: underline; }
+.pied nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+
+@media (max-width: 600px) {
+  body { font-size: 1rem; }
+  main { padding: 36px 16px 56px; }
+  .marque span { display: none; }
+  table, thead, tbody, tr, th, td { display: block; }
+  thead { display: none; }
+  td { padding: 4px 0; border: none; }
+  tr { padding: 10px 0; border-bottom: 1px solid var(--bord); }
+  td:first-child { font-weight: 700; color: var(--titre); }
+}

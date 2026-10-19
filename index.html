@@ -6408,9 +6408,9 @@
           general: true,
           mots: ['qui etes vous', 'entreprise', 'societe', 'saphir', 'presentation', 'a propos', 'devise', 'valeur', 'histoire', 'vous faites quoi', 'que faites vous', 'activite', 'metier', 'domaine'],
           rep: () => ({
-            html: `<p><strong>Saphir M. Groupe</strong> travaille dans le bâtiment et les solutions énergétiques, avec deux implantations :</p>
-              <ul><li><strong>Yaoundé (Cameroun)</strong>, à Bastos : solaire thermique, photovoltaïque, bâtiment et rénovation, pompes et surpresseurs, ventilation.</li>
-              <li><strong>Neuchâtel (Suisse)</strong>, SAPHIR M. GROUPE Sàrl : chauffage, sanitaire, ventilation et solaire en Suisse romande.</li></ul>
+            html: `<p><strong>Saphir M. Groupe</strong> travaille dans le bâtiment et les solutions énergétiques. Sa <strong>maison principale est en Suisse</strong> :</p>
+              <ul><li><strong>Siège : Neuchâtel (Suisse)</strong>, SAPHIR M. GROUPE Sàrl : chauffage, sanitaire, ventilation et solaire en Suisse romande.</li>
+              <li><strong>Implantation au Cameroun : Yaoundé</strong>, à Bastos : solaire thermique, photovoltaïque, bâtiment et rénovation, pompes et surpresseurs, ventilation.</li></ul>
               <p>Devise : <em>Service · Mission · Gloire</em>.</p>`,
             choix: [B.thermique, B.pv, B.suisse, B.methode]
           })
@@ -6686,24 +6686,24 @@
           mots: ['contact', 'contacter', 'joindre', 'telephone', 'numero', 'appeler', 'appel', 'whatsapp', 'email', 'mail', 'courriel', 'ecrire', 'parler a quelqu un', 'conseiller', 'humain', 'commercial', 'agent', 'technicien'],
           rep: (ctx) => {
             const cm = `<p><strong>Cameroun (Yaoundé)</strong></p><ul><li>Fixe : ${TEL_FIXE}</li><li>Mobile et WhatsApp : ${WA_CM}</li><li>Courriel : ${MAIL}</li></ul>`;
-            const ch = `<p><strong>Suisse (Neuchâtel)</strong></p><ul><li>Téléphone et WhatsApp : ${TEL_CH}</li></ul>`;
+            const ch = `<p><strong>Suisse (siège, Neuchâtel)</strong></p><ul><li>Téléphone et WhatsApp : ${TEL_CH}</li></ul>`;
             if (ctx.pays === 'ch') return { html: ch, choix: [B.appelerCH, B.whatsappCH, B.devis] };
             if (ctx.pays === 'cm') return { html: cm + '<p>Le téléphone reste le plus rapide.</p>', choix: [B.appeler, B.whatsapp, B.devis] };
-            return { html: cm + ch + '<p>Le téléphone reste le plus rapide.</p>', choix: [B.appeler, B.whatsapp, B.appelerCH, B.devis] };
+            return { html: ch + cm + '<p>Le téléphone reste le plus rapide.</p>', choix: [B.appelerCH, B.whatsappCH, B.appeler, B.whatsapp] };
           }
         },
         {
           id: 'adresse',
-          mots: ['adresse', 'ou etes vous', 'ou vous trouver', 'localisation', 'situe', 'bureau', 'siege', 'venir vous voir', 'passer vous voir', 'plan', 'itineraire', 'bastos', 'falaises'],
+          mots: ['adresse', 'ou etes vous', 'ou vous trouver', 'localisation', 'situe', 'bureau', 'venir vous voir', 'passer vous voir', 'plan', 'itineraire', 'bastos', 'falaises'],
           rep: (ctx) => {
             const cm = '<p><strong>Cameroun</strong> : Bastos, Rue 1.803, derrière l\'ambassade d\'Espagne, Yaoundé.</p>';
-            const ch = `<p><strong>Suisse</strong> : ${ADRESSE_CH}.</p>`;
+            const ch = `<p><strong>Suisse (siège)</strong> : ${ADRESSE_CH}.</p>`;
             const yaounde = { t: 'Itinéraire Yaoundé', icone: 'ph-map-pin', href: 'https://www.google.com/maps/search/?api=1&query=Ambassade+d%27Espagne+Bastos+Yaound%C3%A9' };
             const neuchatel = { t: 'Itinéraire Neuchâtel', icone: 'ph-map-pin', href: 'https://www.google.com/maps/search/?api=1&query=Route+des+Falaises+7+2000+Neuch%C3%A2tel' };
             const fin = '<p>Appelez avant de passer pour être sûr de trouver la bonne personne.</p>';
             if (ctx.pays === 'ch') return { html: ch + fin, choix: [neuchatel, B.appelerCH] };
             if (ctx.pays === 'cm') return { html: cm + fin, choix: [yaounde, B.appeler] };
-            return { html: cm + ch + fin, choix: [yaounde, neuchatel] };
+            return { html: ch + cm + fin, choix: [neuchatel, yaounde] };
           }
         },
         {
@@ -6721,7 +6721,7 @@
               return { html: `<p>Nos bureaux et notre stock de pièces sont à Yaoundé. Pour <strong>${v.nom}</strong>, indiquez la ville dans votre demande de devis ou appelez le ${TEL_MOBILE} : nous vous dirons si nous pouvons intervenir.</p>`, choix: [B.devis, B.appeler] };
             }
             return {
-              html: `<ul><li><strong>Cameroun</strong> : bureaux et stock de pièces à Yaoundé. Pour une autre ville, appelez le ${TEL_MOBILE}.</li><li><strong>Suisse romande</strong> : Neuchâtel, Yverdon-les-Bains et Lausanne (${TEL_CH}).</li></ul>`,
+              html: `<ul><li><strong>Suisse romande</strong> (siège à Neuchâtel) : Neuchâtel, Yverdon-les-Bains et Lausanne (${TEL_CH}).</li><li><strong>Cameroun</strong> : bureaux et stock de pièces à Yaoundé. Pour une autre ville, appelez le ${TEL_MOBILE}.</li></ul>`,
               choix: [B.devis, B.suisse]
             };
           }
@@ -6758,7 +6758,7 @@
           general: true,
           mots: ['suisse', 'en suisse', 'suisse romande', 'romande', 'neuchatel', 'lausanne', 'yverdon', 'vaud', 'canton', 'sarl', 'site suisse', 'saphirmgroupe ch'],
           rep: () => ({
-            html: `<p>En Suisse, <strong>SAPHIR M. GROUPE Sàrl</strong> est installée à ${ADRESSE_CH} et intervient à <strong>Neuchâtel, Yverdon-les-Bains et Lausanne</strong> :</p>
+            html: `<p>La Suisse est notre <strong>maison principale</strong> : <strong>SAPHIR M. GROUPE Sàrl</strong>, siège à ${ADRESSE_CH}, intervient à <strong>Neuchâtel, Yverdon-les-Bains et Lausanne</strong> :</p>
               <ul><li><strong>Chauffage</strong> : installation, entretien et dépannage (pompes à chaleur, chaudières, chauffage au sol, bois et pellets)</li>
               <li><strong>Sanitaire</strong> : salles de bain, cuisines, rénovation, fuites</li>
               <li><strong>Ventilation</strong> : VMC simple et double flux</li>
@@ -6836,7 +6836,7 @@
           id: 'fondateur',
           mots: ['fondateur', 'fondatrice', 'fonde', 'fondee', 'createur', 'cree par', 'patron', 'directeur', 'gerant', 'proprietaire', 'dirigeant', 'jean claude', 'elanga'],
           rep: () => ({
-            html: '<p>Saphir M. Groupe a été fondée par <strong>Jean-Claude Elanga</strong>, passionné par les technologies de chauffage et d\'énergie. L\'entreprise est présente à Yaoundé (Cameroun) et à Neuchâtel (Suisse).</p>',
+            html: '<p>Saphir M. Groupe a été fondée par <strong>Jean-Claude Elanga</strong>, passionné par les technologies de chauffage et d\'énergie. Son siège principal est à Neuchâtel (Suisse), avec une implantation à Yaoundé (Cameroun).</p>',
             choix: [B.suisse, B.thermique, B.contact]
           })
         },
@@ -6855,6 +6855,15 @@
           rep: () => ({
             html: '<p>Le site n\'utilise <strong>aucun cookie</strong> et ne mesure pas l\'audience. Ce que vous écrivez ici reste dans votre navigateur. Tout est détaillé dans nos pages :</p>',
             choix: [{ t: 'Politique de confidentialité', icone: 'ph-shield-check', href: 'confidentialite.html' }, { t: 'Conditions d\'utilisation', icone: 'ph-file-text', href: 'cgu.html' }]
+          })
+        },
+        {
+          id: 'siege',
+          mots: ['siege', 'siege social', 'maison mere', 'maison principale', 'societe mere', 'bureau principal', 'siege principal', 'entreprise suisse', 'entreprise camerounaise', 'societe suisse', 'nationalite', 'd ou venez vous', 'origine de l entreprise', 'basee ou'],
+          rep: () => ({
+            html: `<p>La <strong>maison principale</strong> de Saphir M. Groupe est en <strong>Suisse</strong> : SAPHIR M. GROUPE Sàrl, ${ADRESSE_CH} (registre du commerce CH-645.1.007.646-4).</p>
+              <p>L'entreprise a aussi une <strong>implantation au Cameroun</strong>, à Bastos (Yaoundé), pour le solaire thermique, le photovoltaïque, les pompes et le bâtiment.</p>`,
+            choix: [B.suisse, { t: 'Adresses', q: 'Où se trouvent vos bureaux ?' }, B.contact]
           })
         },
         {
@@ -7254,7 +7263,8 @@
         ],
         commun: [
           'Comment vous contacter ?',
-          'Où se trouvent vos bureaux ?'
+          'Où se trouvent vos bureaux ?',
+          'Où est votre siège principal ?'
         ]
       };
 
@@ -7294,7 +7304,7 @@
       // Ce qu'on demande sur un sujet ; prioritaire sur le sujet lui-même
       const ASPECTS = ['depannage', 'subventions', 'prix', 'gratuit', 'duree', 'delai', 'suivi', 'garantie', 'contact', 'adresse', 'horaires'];
 
-      const SANS_EFFET_SUR_SUJET = ['salut', 'merci', 'prix', 'duree', 'delai', 'devis', 'contact', 'garantie', 'methode', 'zone', 'horaires', 'adresse', 'depannage', 'gratuit', 'subventions', 'legal', 'suisse'];
+      const SANS_EFFET_SUR_SUJET = ['salut', 'merci', 'prix', 'duree', 'delai', 'devis', 'contact', 'garantie', 'methode', 'zone', 'horaires', 'adresse', 'depannage', 'gratuit', 'subventions', 'legal', 'suisse', 'siege'];
 
       const repondre = (texte) => {
         const t = normaliser(texte);
@@ -7401,7 +7411,7 @@
       let demarre = false;
 
       const accueillir = () => {
-        ajouterBot('<p>Bonjour ! Je suis l\'assistant de <strong>Saphir M. Groupe</strong>.</p><p>Je réponds sur nos activités <strong>au Cameroun</strong> (solaire thermique, photovoltaïque, pompes, ventilation, bâtiment) et <strong>en Suisse romande</strong> (chauffage, sanitaire, ventilation, solaire). Je peux aussi préparer votre demande de devis.</p>', ACCUEIL);
+        ajouterBot('<p>Bonjour ! Je suis l\'assistant de <strong>Saphir M. Groupe</strong>.</p><p>Je réponds sur nos activités <strong>en Suisse romande</strong>, où se trouve notre siège (chauffage, sanitaire, ventilation, solaire), et <strong>au Cameroun</strong> (solaire thermique, photovoltaïque, pompes, ventilation, bâtiment). Je peux aussi préparer votre demande de devis.</p>', ACCUEIL);
       };
 
       const memo = (cle, val) => {

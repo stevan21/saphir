@@ -63,3 +63,14 @@ Attention : plusieurs de ces images semblent venir de sites de fournisseurs
 sur un raccord). Si le dossier technique est diffusé avec, pas de
 changement ; sinon, vérifier les droits ou les remplacer par vos photos.
 Pour changer une image : même nom de fichier, rien à modifier dans le code.
+
+
+4. BANDE « SOLAIRE THERMIQUE EN IMAGES » (section Métier 01)
+------------------------------------------------------------
+Extraites du dossier technique (media/technique.pdf), pages 5, 6 et 17 :
+    thermique-tubes-sous-vide.webp   page 5
+    thermique-capteurs-plans.webp    page 6
+    thermique-thermosiphon.webp      page 6
+    thermique-ballon.webp            page 17 (recadrée)
+Ce sont des équipements types, pas des chantiers Saphir : les légendes
+décrivent l'équipement. Même nom de fichier pour les remplacer.

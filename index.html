@@ -4091,6 +4091,22 @@
       .pole-galerie > * { flex: 0 0 82%; scroll-snap-align: start; }
       .pole-galerie-photo { height: 240px; }
     }
+
+    /* ---------- ASSISTANT : questions types ---------- */
+    .bot-choix .bot-question {
+      width: 100%;
+      justify-content: flex-start;
+      text-align: left;
+      font-weight: 500;
+      line-height: 1.35;
+      padding: 9px 12px;
+    }
+    .bot-choix .bot-question::before {
+      content: '›';
+      color: var(--gold-dark);
+      font-weight: 700;
+      margin-right: 2px;
+    }
   </style>
 
   <script>
@@ -6485,7 +6501,7 @@
           id: 'panneaux',
           titre: 'Nos panneaux',
           sujet: 'pv',
-          mots: ['quel panneau', 'marque', 'monocristallin', 'polycristallin', 'half cut', '550', 'watt crete', 'rendement', 'module', 'cellule', 'puissance panneau'],
+          mots: ['quel panneau', 'quel panneau solaire', 'panneau solaire posez', 'type de panneau', 'marque', 'monocristallin', 'polycristallin', 'half cut', '550', 'watt crete', 'rendement', 'module', 'cellule', 'puissance panneau'],
           rep: () => ({
             html: `<p>Principalement du <strong>monocristallin 550 Wc Half-Cut</strong> :</p>
               <ul><li>144 demi-cellules</li><li>Rendement de 21 à 22,5 %</li><li>Cadre aluminium anodisé, connecteurs MC4</li><li>Durée de vie généralement supérieure à 25 ans</li></ul>
@@ -7031,6 +7047,7 @@
             else if (c.act) agir(c);
           });
         }
+        if (c.question) el.classList.add('bot-question');
         if (c.icone) {
           const i = document.createElement('i');
           i.className = 'ph ' + c.icone;
@@ -7217,6 +7234,63 @@
       const OUI = /^(oui|ouais|ok|okay|d accord|dac|volontiers|yes|vas y|allez|go|bien sur|avec plaisir|je veux bien|pourquoi pas)\b/;
       const NON = /^(non|nan|pas maintenant|plus tard|no|non merci)\b/;
 
+      /* --- Hors de mon domaine : une réponse aimable, puis des questions types ---
+         Chaque question du canevas est une vraie question à laquelle le bot sait répondre. */
+      const CANEVAS = {
+        cm: [
+          'Quelle capacité de chauffe-eau pour 4 personnes ?',
+          'Combien coûte une installation solaire ?',
+          'Que se passe-t-il pendant une coupure de courant ?',
+          'Quels panneaux solaires posez-vous ?',
+          'Comment se déroule un chantier ?',
+          'Intervenez-vous à Douala ?'
+        ],
+        ch: [
+          'Installez-vous des pompes à chaleur en Suisse ?',
+          'Que faire en cas de panne de chauffage à Lausanne ?',
+          'Y a-t-il des subventions pour le solaire en Suisse ?',
+          'Le devis est-il gratuit en Suisse ?',
+          'Faites-vous les salles de bain à Neuchâtel ?'
+        ],
+        commun: [
+          'Comment vous contacter ?',
+          'Où se trouvent vos bureaux ?'
+        ]
+      };
+
+      const melanger = (liste) => liste.map((v) => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map((x) => x[1]);
+
+      // Six questions : orientées vers le pays de la conversation, sinon moitié Cameroun, moitié Suisse
+      const canevas = () => {
+        const cm = melanger(CANEVAS.cm), ch = melanger(CANEVAS.ch), commun = melanger(CANEVAS.commun);
+        const choisies = ctx.pays === 'ch' ? [...ch.slice(0, 4), ...commun.slice(0, 2)]
+          : ctx.pays === 'cm' ? [...cm.slice(0, 4), ...commun.slice(0, 2)]
+          : [...cm.slice(0, 3), ...ch.slice(0, 2), commun[0]];
+        return choisies.map((q) => ({ t: q, q, question: true }));
+      };
+
+      const POLITESSES = [
+        'Bonne question, mais elle sort de mon domaine.',
+        'Je préfère ne pas m\'aventurer sur ce terrain : ce n\'est pas ma spécialité.',
+        'Là, je ne suis pas la bonne personne pour vous répondre.'
+      ];
+      let politesse = 0;
+
+      // Une vraie question (mot interrogatif ou « ? ») ou un message qu'on ne comprend pas
+      const QUESTION = /\?|\b(qui|que|quoi|comment|pourquoi|quel|quelle|quels|quelles|ou|quand|combien|est ce)\b/;
+
+      const horsSujet = (insister, brut) => {
+        const intro = QUESTION.test(brut) ? POLITESSES[politesse++ % POLITESSES.length] : 'Je n\'ai pas compris votre message.';
+        const role = 'Je suis l\'assistant de <strong>Saphir M. Groupe</strong> : je réponds sur nos métiers (solaire, chauffage, ventilation, sanitaire, pompes, bâtiment), au Cameroun comme en Suisse romande.';
+        const relance = insister ? ' Si votre question concerne un projet précis, l\'équipe vous répondra volontiers.' : '';
+        const choix = canevas();
+        if (insister) choix.push(B.contact);
+        return ajouterBot(`<p>${intro} ${role}${relance}</p><p>Voici quelques questions que vous pouvez me poser :</p>`, choix);
+      };
+
+      // Sujets manifestement étrangers à l'entreprise : on ne force pas une réponse approximative
+      const HORS_SUJET = /\b(meteo|quel temps fait|temps qu il fait|il pleut|blague|devinette|president|politique|election|ministre|football|foot|match|ligue|coupe du monde|recette|film|serie|musique|chanson|religion|horoscope|bitcoin|crypto|bourse|devoir|exercice|mathematique|traduis|traduction|capitale|poeme|histoire drole|qui es tu amoureux|ton age|quel age as tu)\b/;
+
       // Ce qu'on demande sur un sujet ; prioritaire sur le sujet lui-même
       const ASPECTS = ['depannage', 'subventions', 'prix', 'gratuit', 'duree', 'delai', 'suivi', 'garantie'];
 
@@ -7258,7 +7332,7 @@
         }
 
         // Une ville seule (« et à Lausanne ? ») : on répond sur la zone d'intervention
-        if (lieu && lieu.nom && (!choisi || ['salut', 'merci'].includes(choisi.id))) choisi = SUJETS.find((x) => x.id === 'zone');
+        if (lieu && lieu.nom && !HORS_SUJET.test(t) && (!choisi || ['salut', 'merci'].includes(choisi.id))) choisi = SUJETS.find((x) => x.id === 'zone');
         // Le chauffage et le sanitaire suisses orientent vers la Suisse
         if (choisi && ['chauffage', 'pac', 'freecooling'].includes(choisi.id) && !ctx.pays) ctx.pays = 'ch';
 
@@ -7279,18 +7353,20 @@
           choisi = SUJETS.find((s) => s.id === 'capacite');
         }
 
+        // Question manifestement hors domaine (météo, sport, politique…), sauf mot du métier très net
+        if (HORS_SUJET.test(t) && !(resultats[0] && resultats[0].score >= 4)) {
+          ctx.rates += 1;
+          return horsSujet(ctx.rates >= 2, texte.toLowerCase() + ' ' + t);
+        }
+
         if (!choisi) {
           ctx.rates += 1;
-          if (ctx.rates >= 2) {
-            return ajouterBot(`<p>Je ne trouve pas la réponse, désolé. Un membre de l'équipe vous répondra directement : ${TEL_MOBILE}, ou sur WhatsApp.</p>`,
-              [B.appeler, B.whatsapp, B.devis]);
-          }
-          // Des sujets qui ressemblent à ce qui a été écrit, plutôt qu'une liste générique
+          // Une faute de frappe sur un mot du métier : on propose les sujets proches
           const proches = suggestions(mots(texte));
-          if (proches.length) {
+          if (proches.length && ctx.rates < 2) {
             return ajouterBot('<p>Je ne suis pas sûr d\'avoir compris. Vouliez-vous parler de :</p>', proches);
           }
-          return ajouterBot('<p>Je n\'ai pas bien saisi. Je peux vous renseigner sur ces sujets :</p>', ACCUEIL);
+          return horsSujet(ctx.rates >= 2, texte.toLowerCase() + ' ' + t);
         }
         ctx.rates = 0;
 

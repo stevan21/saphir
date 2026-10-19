@@ -4020,6 +4020,77 @@
     @media (max-width: 768px) {
       .footer-legal { justify-content: center; }
     }
+
+    /* ---------- SOLAIRE THERMIQUE EN IMAGES ---------- */
+    .pole-galerie {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 56px;
+    }
+
+    .pole-galerie-photo {
+      position: relative;
+      margin: 0;
+      height: 250px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pole-galerie-photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .pole-galerie-photo:hover img { transform: scale(1.05); }
+
+    .pole-galerie-photo figcaption {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(10, 26, 47, 0.86);
+      color: #ffffff;
+      font-size: 0.85rem;
+      line-height: 1.35;
+    }
+
+    .pole-galerie-photo figcaption span {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    @media (max-width: 1024px) {
+      .pole-galerie { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Mobile : carrousel à faire glisser, comme les autres listes */
+    @media (max-width: 768px) {
+      .pole-galerie {
+        display: flex;
+        gap: 14px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-padding: 0 24px;
+        margin: 40px -24px 0;
+        padding: 6px 24px 10px;
+        scrollbar-width: none;
+      }
+      .pole-galerie::-webkit-scrollbar { display: none; }
+      .pole-galerie > * { flex: 0 0 82%; scroll-snap-align: start; }
+      .pole-galerie-photo { height: 240px; }
+    }
   </style>
 
   <script>
@@ -4351,6 +4422,26 @@
             <a href="#catalogue" class="btn btn-outline"><i class="ph ph-file-pdf"></i> Dossier technique</a>
           </div>
         </div>
+      </div>
+
+      <!-- Équipements types, tirés du dossier technique (pas des chantiers Saphir) -->
+      <div class="pole-galerie" aria-label="Le solaire thermique en images">
+        <figure class="pole-galerie-photo reveal reveal-delay-1">
+          <img src="media/thermique-tubes-sous-vide.webp" width="900" height="500" loading="lazy" alt="Capteurs solaires à tubes sous vide posés sur une toiture en tuiles">
+          <figcaption><span>Tubes sous vide</span>Le vide isole les tubes et limite les pertes</figcaption>
+        </figure>
+        <figure class="pole-galerie-photo reveal reveal-delay-2">
+          <img src="media/thermique-capteurs-plans.webp" width="688" height="690" loading="lazy" alt="Deux capteurs solaires plans vitrés installés sur une toiture en tuiles">
+          <figcaption><span>Capteurs plans vitrés</span>Absorbeur sélectif sous verre trempé</figcaption>
+        </figure>
+        <figure class="pole-galerie-photo reveal reveal-delay-3">
+          <img src="media/thermique-thermosiphon.webp" width="719" height="363" loading="lazy" alt="Chauffe-eau solaire à thermosiphon : rangée de tubes surmontée d'un ballon">
+          <figcaption><span>Thermosiphon</span>Circulation naturelle, sans pompe</figcaption>
+        </figure>
+        <figure class="pole-galerie-photo reveal reveal-delay-4">
+          <img src="media/thermique-ballon.webp" width="625" height="820" loading="lazy" alt="Ballon d'eau chaude solaire et vase d'expansion rouge dans un local technique">
+          <figcaption><span>Ballon de stockage</span>Avec vase d'expansion et groupe de sécurité</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -5853,7 +5944,7 @@
       const mouvementReduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       // Sous chaque carrousel, un point par carte ; le point actif s'allonge
-      document.querySelectorAll('.expertise-list, .services-grid, .terrain, .gallery-grid').forEach((piste) => {
+      document.querySelectorAll('.expertise-list, .services-grid, .terrain, .gallery-grid, .pole-galerie').forEach((piste) => {
         const cartes = Array.from(piste.children).filter((c) => !c.matches('svg'));
         if (cartes.length < 2) return;
         const points = document.createElement('div');

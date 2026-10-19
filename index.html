@@ -6333,7 +6333,10 @@
       const TEL_FIXE = '<a href="tel:+237222201607">+237 222 20 16 07</a>';
       const TEL_MOBILE = '<a href="tel:+237695515326">+237 695 515 326</a>';
       const WA_CM = '<a href="https://wa.me/237695515326" target="_blank" rel="noopener">+237 695 515 326</a>';
-      const WA_CH = '<a href="https://wa.me/41783418757" target="_blank" rel="noopener">+41 78 341 87 57</a>';
+      // Suisse : coordonnées publiées sur saphirmgroupe.ch (SAPHIR M. GROUPE Sàrl, Neuchâtel)
+      const TEL_CH = '<a href="tel:+41783418757">+41 78 341 87 57</a>';
+      const WA_CH = '<a href="https://wa.me/41793642442" target="_blank" rel="noopener">+41 79 364 24 42</a>';
+      const ADRESSE_CH = 'Rte des Falaises 7, 2000 Neuchâtel';
       const MAIL = '<a href="mailto:info@saphirmgroupe.com">info@saphirmgroupe.com</a>';
 
       /* --- Boutons de réponse rapide réutilisés --- */
@@ -6355,17 +6358,24 @@
         dossier: { t: 'Dossier technique (PDF)', icone: 'ph-file-pdf', href: 'media/technique.pdf', telecharger: true },
         catalogue: { t: 'Voir le catalogue', icone: 'ph-book-open', act: 'catalogue' },
         galerie: { t: 'Voir les photos', icone: 'ph-images', act: 'aller', cible: '#galerie' },
-        contact: { t: 'Nous contacter', q: 'Comment vous joindre ?' }
+        contact: { t: 'Nous contacter', q: 'Comment vous joindre ?' },
+        suisse: { t: 'En Suisse', q: 'Vos services en Suisse' },
+        chauffage: { t: 'Chauffage', q: 'Le chauffage' },
+        sanitaire: { t: 'Sanitaire', q: 'Les travaux sanitaires' },
+        depannage: { t: 'Dépannage', q: 'J\'ai une panne' },
+        subventions: { t: 'Subventions', q: 'Les subventions' },
+        appelerCH: { t: 'Appeler (Suisse)', icone: 'ph-phone', href: 'tel:+41783418757' },
+        whatsappCH: { t: 'WhatsApp (Suisse)', icone: 'ph-whatsapp-logo', href: 'https://wa.me/41793642442' }
       };
 
-      const ACCUEIL = [B.thermique, B.pv, B.autres, B.prix, B.devis, B.contact];
+      const ACCUEIL = [B.thermique, B.pv, B.autres, B.suisse, B.prix, B.devis, B.contact];
 
       /* --- Base de connaissances --- */
       const SUJETS = [
         {
           id: 'salut',
           mots: ['bonjour', 'bonsoir', 'salut', 'hello', 'coucou', 'hey', 'bjr', 'slt', 'hi'],
-          rep: () => ({ html: '<p>Bonjour ! Sur quoi porte votre projet ?</p>', choix: ACCUEIL })
+          rep: (ctx) => ({ html: `<p>${/bonsoir/.test(ctx.question) || new Date().getHours() >= 18 ? 'Bonsoir' : 'Bonjour'} ! Sur quoi porte votre projet ?</p>`, choix: ACCUEIL })
         },
         {
           id: 'merci',
@@ -6382,11 +6392,11 @@
           general: true,
           mots: ['qui etes vous', 'entreprise', 'societe', 'saphir', 'presentation', 'a propos', 'devise', 'valeur', 'histoire', 'vous faites quoi', 'que faites vous', 'activite', 'metier', 'domaine'],
           rep: () => ({
-            html: `<p><strong>Saphir M. Groupe</strong> est une entreprise du bâtiment et des solutions énergétiques, basée à Bastos (Yaoundé). Devise : <em>Service · Mission · Gloire</em>.</p>
-              <p>Cinq métiers :</p>
-              <ul><li>Solaire thermique (eau chaude)</li><li>Photovoltaïque (électricité)</li><li>Bâtiment &amp; rénovation</li><li>Pompes &amp; surpresseurs</li><li>Ventilation &amp; confort</li></ul>
-              <p>Nous accompagnons particuliers, entreprises et institutions, de la visite technique au suivi de performance.</p>`,
-            choix: [B.thermique, B.pv, B.autres, B.methode]
+            html: `<p><strong>Saphir M. Groupe</strong> travaille dans le bâtiment et les solutions énergétiques, avec deux implantations :</p>
+              <ul><li><strong>Yaoundé (Cameroun)</strong>, à Bastos : solaire thermique, photovoltaïque, bâtiment et rénovation, pompes et surpresseurs, ventilation.</li>
+              <li><strong>Neuchâtel (Suisse)</strong>, SAPHIR M. GROUPE Sàrl : chauffage, sanitaire, ventilation et solaire en Suisse romande.</li></ul>
+              <p>Devise : <em>Service · Mission · Gloire</em>.</p>`,
+            choix: [B.thermique, B.pv, B.suisse, B.methode]
           })
         },
         {
@@ -6507,7 +6517,7 @@
         {
           id: 'climat',
           titre: 'Tenue au climat',
-          mots: ['climat', 'humidite', 'humide', 'corrosion', 'rouille', 'pluie', 'saison des pluies', 'chaleur', 'uv', 'resiste', 'resistance', 'tenir au climat', 'tropical'],
+          mots: ['climat', 'humidite', 'humide', 'corrosion', 'rouille', 'pluie', 'saison des pluies', 'forte chaleur', 'uv', 'resiste', 'resistance', 'tenir au climat', 'tropical'],
           rep: () => ({
             html: `<p>C'est un critère de sélection à part entière :</p>
               <ul><li><strong>Humidité</strong> (plus de 80 % en saison des pluies) : laiton et inox traités contre la corrosion</li>
@@ -6538,7 +6548,7 @@
         {
           id: 'pompes',
           titre: 'Pompes',
-          mots: ['pompe', 'surpresseur', 'surpression', 'pression', 'pression d eau', 'forage', 'puits', 'relevage', 'transfert', 'pompe immergee', 'pompage solaire', 'inox', 'tube inox', 'chateau d eau', 'plomberie', 'sanitaire', 'reseau d eau'],
+          mots: ['pompe', 'surpresseur', 'surpression', 'pression', 'pression d eau', 'forage', 'puits', 'relevage', 'transfert', 'pompe immergee', 'pompage solaire', 'inox', 'tube inox', 'chateau d eau', 'reseau d eau'],
           rep: () => ({
             html: `<p><strong>Pompes &amp; surpresseurs</strong> :</p>
               <ul><li>Groupes de surpression pour tenir la pression dans les étages</li>
@@ -6577,17 +6587,29 @@
         },
         {
           id: 'delai',
-          mots: ['delai', 'combien de temps pour installer', 'duree des travaux', 'duree du chantier', 'quand pouvez vous', 'rapidement', 'urgent', 'urgence', 'disponibilite', 'des que possible'],
-          rep: () => ({
-            html: `<p>Le délai dépend de l'ampleur du projet : il est fixé à l'étape <strong>plan d'exécution</strong>, après la visite technique, avec un planning phasé pour rester compatible avec l'activité du site.</p><p>Si c'est urgent, le plus rapide est d'appeler : ${TEL_MOBILE}.</p>`,
-            choix: [B.appeler, B.devis]
-          })
+          mots: ['delai', 'combien de temps pour installer', 'combien de temps faut il', 'duree des travaux', 'duree du chantier', 'duree de l installation', 'quand pouvez vous', 'rapidement', 'disponibilite', 'des que possible', 'combien de jours'],
+          rep: (ctx) => {
+            if (ctx.pays === 'ch' && ctx.sujet === 'pv') {
+              return {
+                html: '<p>En Suisse, l\'installation de panneaux solaires se fait <strong>en général en 2 à 3 jours</strong>, selon la complexité du projet. L\'étude de faisabilité et les démarches de subventions se font avant.</p>',
+                choix: [B.subventions, B.devis]
+              };
+            }
+            const ch = `<p><strong>En Suisse</strong> : les urgences sont prises en charge en général sous 24 heures ; les autres travaux sont planifiés selon vos disponibilités (${TEL_CH}).</p>`;
+            const cm = `<p><strong>Au Cameroun</strong> : le délai dépend de l'ampleur du projet. Il est fixé à l'étape <strong>plan d'exécution</strong>, après la visite technique (${TEL_MOBILE}).</p>`;
+            return { html: ctx.pays === 'ch' ? ch : ctx.pays === 'cm' ? cm : cm + ch, choix: [B.devis, B.depannage] };
+          }
         },
         {
           id: 'suivi',
           titre: 'Suivi et entretien',
-          mots: ['maintenance', 'entretien', 'entretenir', 'suivi', 'apres installation', 'sav', 'service apres vente', 'reparation', 'reparer', 'depannage', 'depanner', 'panne', 'piece de rechange', 'assistance', 'nettoyage', 'nettoyer'],
-          rep: () => ({
+          mots: ['maintenance', 'entretien', 'entretenir', 'suivi', 'apres installation', 'sav', 'service apres vente', 'piece de rechange', 'assistance', 'nettoyage', 'nettoyer'],
+          rep: (ctx) => ctx.sujet === 'chauffage' ? {
+            html: `<p>Pour le chauffage, un <strong>entretien annuel</strong> est recommandé, idéalement avant l'hiver. Il comprend :</p>
+              <ul><li>le nettoyage des composants</li><li>la vérification des circuits et des thermostats</li><li>un diagnostic complet pour anticiper les pannes</li></ul>
+              <p>Il prolonge la durée de vie de l'installation et réduit la consommation. Service proposé en Suisse romande : ${TEL_CH}.</p>`,
+            choix: [B.depannage, B.whatsappCH]
+          } : ({
             html: `<p>Trois formules après la mise en service :</p>
               <ul><li><strong>Maintenance préventive</strong> : contrôle visuel, nettoyage, vérification des paramètres</li>
               <li><strong>Maintenance curative</strong> : diagnostic et réparation, sur demande ou sous astreinte</li>
@@ -6622,6 +6644,12 @@
           titre: 'Prix',
           mots: ['prix', 'tarif', 'cout', 'couter', 'combien ca coute', 'combien coute', 'combien pour', 'budget', 'cher', 'fcfa', 'franc', 'cfa', 'montant', 'rentable', 'rentabilite', 'investissement', 'paiement', 'payer', 'facilite'],
           rep: (ctx) => {
+            if (ctx.pays === 'ch' || ctx.sujet === 'chauffage' || ctx.sujet === 'sanitaire') {
+              return {
+                html: '<p>En Suisse, le coût dépend du type de système et de la taille du logement (pour le solaire, de la taille de l\'installation et des équipements choisis). <strong>Le devis est gratuit</strong> : décrivez votre projet sur WhatsApp et l\'équipe vous répond.</p><p>Pour le solaire, des subventions fédérales et cantonales peuvent réduire la facture.</p>',
+                choix: [B.whatsappCH, B.appelerCH, B.subventions]
+              };
+            }
             const facteurs = ctx.sujet === 'pv' ? 'la puissance à installer, la part de stockage par batteries et la configuration (autoconsommation, site isolé, hybride)'
               : ctx.sujet === 'thermique' ? 'la capacité du ballon, le type de capteurs et le mode de circulation (thermosiphon ou forcée)'
               : 'la puissance ou la capacité nécessaire, les équipements retenus et l\'état du site';
@@ -6640,34 +6668,56 @@
         {
           id: 'contact',
           mots: ['contact', 'contacter', 'joindre', 'telephone', 'numero', 'appeler', 'appel', 'whatsapp', 'email', 'mail', 'courriel', 'ecrire', 'parler a quelqu un', 'conseiller', 'humain', 'commercial', 'agent', 'technicien'],
-          rep: () => ({
-            html: `<ul><li>Fixe : ${TEL_FIXE}</li><li>Mobile &amp; WhatsApp : ${WA_CM}</li><li>WhatsApp Suisse : ${WA_CH}</li><li>Courriel : ${MAIL}</li></ul><p>Le téléphone reste le plus rapide.</p>`,
-            choix: [B.appeler, B.whatsapp, B.devis]
-          })
+          rep: (ctx) => {
+            const cm = `<p><strong>Cameroun (Yaoundé)</strong></p><ul><li>Fixe : ${TEL_FIXE}</li><li>Mobile et WhatsApp : ${WA_CM}</li><li>Courriel : ${MAIL}</li></ul>`;
+            const ch = `<p><strong>Suisse (Neuchâtel)</strong></p><ul><li>Téléphone : ${TEL_CH}</li><li>WhatsApp : ${WA_CH}</li></ul>`;
+            if (ctx.pays === 'ch') return { html: ch, choix: [B.appelerCH, B.whatsappCH, B.devis] };
+            if (ctx.pays === 'cm') return { html: cm + '<p>Le téléphone reste le plus rapide.</p>', choix: [B.appeler, B.whatsapp, B.devis] };
+            return { html: cm + ch + '<p>Le téléphone reste le plus rapide.</p>', choix: [B.appeler, B.whatsapp, B.appelerCH, B.devis] };
+          }
         },
         {
           id: 'adresse',
-          mots: ['adresse', 'ou etes vous', 'ou vous trouver', 'localisation', 'situe', 'bureau', 'siege', 'venir vous voir', 'passer vous voir', 'plan', 'itineraire', 'bastos'],
-          rep: () => ({
-            html: '<p>Nos bureaux : <strong>Bastos, Rue 1.803</strong>, derrière l\'ambassade d\'Espagne, <strong>Yaoundé</strong> (Cameroun).</p><p>Appelez avant de passer pour être sûr de trouver la bonne personne.</p>',
-            choix: [B.appeler, { t: 'Itinéraire', icone: 'ph-map-pin', href: 'https://www.google.com/maps/search/?api=1&query=Ambassade+d%27Espagne+Bastos+Yaound%C3%A9' }]
-          })
+          mots: ['adresse', 'ou etes vous', 'ou vous trouver', 'localisation', 'situe', 'bureau', 'siege', 'venir vous voir', 'passer vous voir', 'plan', 'itineraire', 'bastos', 'falaises'],
+          rep: (ctx) => {
+            const cm = '<p><strong>Cameroun</strong> : Bastos, Rue 1.803, derrière l\'ambassade d\'Espagne, Yaoundé.</p>';
+            const ch = `<p><strong>Suisse</strong> : ${ADRESSE_CH}.</p>`;
+            const yaounde = { t: 'Itinéraire Yaoundé', icone: 'ph-map-pin', href: 'https://www.google.com/maps/search/?api=1&query=Ambassade+d%27Espagne+Bastos+Yaound%C3%A9' };
+            const neuchatel = { t: 'Itinéraire Neuchâtel', icone: 'ph-map-pin', href: 'https://www.google.com/maps/search/?api=1&query=Route+des+Falaises+7+2000+Neuch%C3%A2tel' };
+            const fin = '<p>Appelez avant de passer pour être sûr de trouver la bonne personne.</p>';
+            if (ctx.pays === 'ch') return { html: ch + fin, choix: [neuchatel, B.appelerCH] };
+            if (ctx.pays === 'cm') return { html: cm + fin, choix: [yaounde, B.appeler] };
+            return { html: cm + ch + fin, choix: [yaounde, neuchatel] };
+          }
         },
         {
           id: 'zone',
-          mots: ['zone', 'intervenez', 'intervention', 'deplacez', 'douala', 'bafoussam', 'garoua', 'kribi', 'bamenda', 'region', 'ville', 'province', 'cameroun', 'afrique', 'suisse', 'etranger', 'chez moi'],
-          rep: () => ({
-            html: `<p>Nos bureaux et notre stock de pièces sont à <strong>Yaoundé</strong>. Pour savoir si nous intervenons dans votre ville, indiquez-la dans votre demande de devis ou appelez le ${TEL_MOBILE}.</p><p>Une ligne WhatsApp est aussi ouverte en Suisse : ${WA_CH}.</p>`,
-            choix: [B.devis, B.appeler]
-          })
+          mots: ['zone', 'intervenez', 'intervention', 'deplacez', 'region', 'ville', 'province', 'cameroun', 'afrique', 'etranger', 'chez moi', 'vous venez'],
+          rep: (ctx) => {
+            const v = ctx.ville;
+            if (v && v.pays === 'ch' && !v.servie) {
+              return { html: `<p>Nos zones annoncées en Suisse sont <strong>Neuchâtel, Yverdon-les-Bains et Lausanne</strong>. Pour ${v.nom}, appelez le ${TEL_CH} pour savoir si nous pouvons intervenir.</p>`, choix: [B.appelerCH, B.whatsappCH] };
+            }
+            if (v && v.pays === 'ch') {
+              return { html: `<p>Oui, <strong>${v.nom}</strong> fait partie de nos zones d'intervention en Suisse romande (avec Neuchâtel, Yverdon-les-Bains et Lausanne) : chauffage, sanitaire, ventilation et solaire.</p>`, choix: [B.chauffage, B.devis, B.appelerCH] };
+            }
+            if (v && v.pays === 'cm' && v.nom !== 'Yaoundé') {
+              return { html: `<p>Nos bureaux et notre stock de pièces sont à Yaoundé. Pour <strong>${v.nom}</strong>, indiquez la ville dans votre demande de devis ou appelez le ${TEL_MOBILE} : nous vous dirons si nous pouvons intervenir.</p>`, choix: [B.devis, B.appeler] };
+            }
+            return {
+              html: `<ul><li><strong>Cameroun</strong> : bureaux et stock de pièces à Yaoundé. Pour une autre ville, appelez le ${TEL_MOBILE}.</li><li><strong>Suisse romande</strong> : Neuchâtel, Yverdon-les-Bains et Lausanne (${TEL_CH}).</li></ul>`,
+              choix: [B.devis, B.suisse]
+            };
+          }
         },
         {
           id: 'horaires',
-          mots: ['horaire', 'heure d ouverture', 'ouvert', 'ouverture', 'ferme', 'samedi', 'dimanche', 'week end', 'weekend', 'jour ferie'],
-          rep: () => ({
-            html: `<p>Je n'ai pas les horaires d'ouverture. Le plus sûr est d'appeler le ${TEL_FIXE} ou d'écrire sur WhatsApp au ${WA_CM}.</p>`,
-            choix: [B.appeler, B.whatsapp]
-          })
+          mots: ['horaire', 'heure d ouverture', 'ouvert', 'ouverture', 'ferme', 'samedi', 'dimanche', 'week end', 'weekend', 'jour ferie', 'nuit', '24h', '24 24'],
+          rep: (ctx) => {
+            const ch = `<p><strong>En Suisse</strong>, un service de dépannage est annoncé <strong>24 heures sur 24</strong> pour le chauffage, le sanitaire et la ventilation : ${TEL_CH}.</p>`;
+            const cm = `<p><strong>Au Cameroun</strong>, je n'ai pas les horaires d'ouverture : le plus sûr est d'appeler le ${TEL_FIXE} ou d'écrire sur WhatsApp au ${WA_CM}.</p>`;
+            return { html: ctx.pays === 'ch' ? ch : ctx.pays === 'cm' ? cm : cm + ch, choix: [B.appeler, B.appelerCH] };
+          }
         },
         {
           id: 'dossier',
@@ -6687,6 +6737,111 @@
           })
         },
         {
+          id: 'suisse',
+          titre: 'En Suisse',
+          general: true,
+          mots: ['suisse', 'en suisse', 'suisse romande', 'romande', 'neuchatel', 'lausanne', 'yverdon', 'vaud', 'canton', 'sarl', 'site suisse', 'saphirmgroupe ch'],
+          rep: () => ({
+            html: `<p>En Suisse, <strong>SAPHIR M. GROUPE Sàrl</strong> est installée à ${ADRESSE_CH} et intervient à <strong>Neuchâtel, Yverdon-les-Bains et Lausanne</strong> :</p>
+              <ul><li><strong>Chauffage</strong> : installation, entretien et dépannage (pompes à chaleur, chaudières, chauffage au sol, bois et pellets)</li>
+              <li><strong>Sanitaire</strong> : salles de bain, cuisines, rénovation, fuites</li>
+              <li><strong>Ventilation</strong> : VMC simple et double flux</li>
+              <li><strong>Solaire</strong> : panneaux photovoltaïques, batteries, aide aux subventions</li></ul>
+              <p>Devis gratuit, dépannage d'urgence : ${TEL_CH} ou WhatsApp ${WA_CH}.</p>`,
+            choix: [B.chauffage, B.sanitaire, B.depannage, B.whatsappCH]
+          })
+        },
+        {
+          id: 'chauffage',
+          titre: 'Chauffage',
+          sujet: 'chauffage',
+          mots: ['chauffage', 'chauffer', 'radiateur', 'chaudiere', 'chaudiere a gaz', 'chaudiere a condensation', 'mazout', 'fioul', 'gaz', 'chauffage au sol', 'plancher chauffant', 'chauffage electrique', 'chauffage central', 'pellet', 'granule', 'chauffage au bois', 'bois', 'hybride chauffage', 'thermostat', 'maison froide'],
+          rep: () => ({
+            html: `<p>Le chauffage est notre métier en <strong>Suisse romande</strong> (Neuchâtel, Yverdon-les-Bains, Lausanne) : installation, entretien et réparation.</p>
+              <ul><li><strong>Pompes à chaleur</strong></li><li><strong>Chaudières</strong> à gaz ou à fioul, dont à condensation</li><li><strong>Chauffage au sol</strong></li><li><strong>Chauffage électrique</strong></li><li><strong>Bois et pellets</strong>, dont la chaudière à pellets Heitzmann avec accumulation d'eau</li><li><strong>Systèmes hybrides</strong>, combinés au solaire</li></ul>
+              <p>Le choix dépend de votre logement et de votre budget : l'équipe vous conseille. Au Cameroun, nos solutions de chauffage portent sur l'eau chaude solaire.</p>`,
+            choix: [B.suivi, B.depannage, { t: 'Pompe à chaleur', q: 'La pompe à chaleur' }, B.whatsappCH]
+          })
+        },
+        {
+          id: 'pac',
+          titre: 'Pompe à chaleur',
+          sujet: 'chauffage',
+          mots: ['pompe a chaleur', 'pompes a chaleur', 'pac', 'aerothermie', 'geothermie', 'air eau'],
+          rep: () => ({
+            html: `<p>La <strong>pompe à chaleur</strong> est une solution économique et respectueuse de l'environnement. Nous l'installons, l'entretenons et la réparons en Suisse romande, seule ou combinée à d'autres systèmes (solaire, chaudière) en installation hybride.</p>
+              <p>Un entretien annuel garde son rendement. Pour une étude chez vous : ${TEL_CH}.</p>`,
+            choix: [B.suivi, B.prix, B.whatsappCH]
+          })
+        },
+        {
+          id: 'freecooling',
+          titre: 'Rafraîchissement',
+          mots: ['free cooling', 'freecooling', 'climatisation', 'clim', 'climatiser', 'rafraichir', 'rafraichissement', 'refroidir', 'refroidissement', 'trop chaud', 'canicule'],
+          rep: () => ({
+            html: `<p>En Suisse, nous proposons le <strong>free cooling</strong> : un rafraîchissement pendant les périodes de chaleur, qui s'appuie sur l'installation de chauffage.</p><p>Au Cameroun, nos solutions portent sur la ventilation et l'extraction d'air. La climatisation ne fait pas partie des services présentés : appelez le ${TEL_MOBILE} pour en parler.</p>`,
+            choix: [B.chauffage, { t: 'Ventilation', q: 'La ventilation' }]
+          })
+        },
+        {
+          id: 'sanitaire',
+          titre: 'Sanitaire',
+          sujet: 'sanitaire',
+          mots: ['sanitaire', 'sanitaires', 'plomberie', 'plombier', 'salle de bain', 'salle de bains', 'douche', 'baignoire', 'vasque', 'lavabo', 'evier', 'robinet', 'robinetterie', 'canalisation', 'debouchage', 'deboucher', 'bouche', 'wc', 'toilette', 'chasse d eau'],
+          rep: () => ({
+            html: `<ul><li><strong>En Suisse romande</strong> : pose de salles de bain et de cuisines, rénovation complète, réparation de fuites, débouchage de canalisations et entretien préventif, avec des équipements économes en eau.</li>
+              <li><strong>Au Cameroun</strong> : réseaux sanitaires, tubes inox 300L et 316L, groupes de surpression pour la pression dans les étages.</li></ul>`,
+            choix: [B.depannage, { t: 'Pompes', q: 'Les pompes et surpresseurs' }, B.devis]
+          })
+        },
+        {
+          id: 'depannage',
+          titre: 'Dépannage',
+          mots: ['urgence', 'urgent', 'depannage', 'depanner', 'panne', 'en panne', 'ne chauffe plus', 'ne marche plus', 'ne fonctionne plus', 'fuite', 'fuite d eau', 'plus d eau chaude', 'pas d eau chaude', 'chaudiere en panne', 'bruit', 'bruits', 'pression basse', 'probleme', 'reparation urgente', 'intervention rapide'],
+          rep: (ctx) => {
+            const ch = `<p><strong>En Suisse romande</strong> : dépannage annoncé 24 h/24, intervention en général sous 24 heures. Appelez le ${TEL_CH} ou écrivez sur WhatsApp au ${WA_CH}.</p>`;
+            const cm = `<p><strong>Au Cameroun</strong> : maintenance curative sur demande ou sous astreinte, avec un stock de pièces à Yaoundé. Appelez le ${TEL_MOBILE}.</p>`;
+            const conseil = '<p>En attendant, notez ce que vous observez (bruit, fuite, pression, message d\'erreur) : le diagnostic sera plus rapide.</p>';
+            if (ctx.pays === 'ch') return { html: ch + conseil, choix: [B.appelerCH, B.whatsappCH] };
+            if (ctx.pays === 'cm') return { html: cm + conseil, choix: [B.appeler, B.whatsapp] };
+            return { html: cm + ch + conseil, choix: [B.appeler, B.appelerCH] };
+          }
+        },
+        {
+          id: 'subventions',
+          titre: 'Subventions',
+          mots: ['subvention', 'subventions', 'aide financiere', 'aides', 'prime', 'programme batiments', 'deduction fiscale', 'impot', 'fiscal', 'avantage fiscal', 'financement'],
+          rep: () => ({
+            html: `<p><strong>En Suisse</strong>, les installations solaires peuvent bénéficier de <strong>subventions fédérales et cantonales</strong> et d'avantages fiscaux. Nous vous aidons à monter les dossiers pour obtenir le maximum d'aides : ${TEL_CH}.</p><p><strong>Au Cameroun</strong>, le site ne présente pas d'aide publique. L'étude de rentabilité, faite avec le dimensionnement, chiffre ce que l'installation vous fera économiser.</p>`,
+            choix: [B.pv, B.whatsappCH, B.devis]
+          })
+        },
+        {
+          id: 'fondateur',
+          mots: ['fondateur', 'fondatrice', 'fonde', 'fondee', 'createur', 'cree par', 'patron', 'directeur', 'gerant', 'proprietaire', 'dirigeant', 'jean claude', 'elanga'],
+          rep: () => ({
+            html: '<p>Saphir M. Groupe a été fondée par <strong>Jean-Claude Elanga</strong>, passionné par les technologies de chauffage et d\'énergie. L\'entreprise est présente à Yaoundé (Cameroun) et à Neuchâtel (Suisse).</p>',
+            choix: [B.suisse, B.thermique, B.contact]
+          })
+        },
+        {
+          id: 'gratuit',
+          mots: ['gratuit', 'gratuite', 'payant', 'payante', 'frais de devis', 'devis payant', 'deplacement payant', 'visite payante', 'combien coute le devis'],
+          rep: (ctx) => {
+            const ch = '<p><strong>En Suisse</strong>, le devis est gratuit.</p>';
+            const cm = `<p><strong>Au Cameroun</strong>, le site ne précise pas les conditions de la visite technique : demandez-les au ${TEL_MOBILE}.</p>`;
+            return { html: ctx.pays === 'ch' ? ch : ctx.pays === 'cm' ? cm : ch + cm, choix: [B.devis, B.contact] };
+          }
+        },
+        {
+          id: 'legal',
+          mots: ['cgu', 'conditions generales', 'conditions d utilisation', 'mentions legales', 'confidentialite', 'donnees personnelles', 'mes donnees', 'cookie', 'cookies', 'rgpd', 'vie privee'],
+          rep: () => ({
+            html: '<p>Le site n\'utilise <strong>aucun cookie</strong> et ne mesure pas l\'audience. Ce que vous écrivez ici reste dans votre navigateur. Tout est détaillé dans nos pages :</p>',
+            choix: [{ t: 'Politique de confidentialité', icone: 'ph-shield-check', href: 'confidentialite.html' }, { t: 'Conditions d\'utilisation', icone: 'ph-file-text', href: 'cgu.html' }]
+          })
+        },
+        {
           id: 'emploi',
           mots: ['emploi', 'recrutement', 'recrutez', 'embauche', 'stage', 'stagiaire', 'job', 'travailler chez vous', 'candidature', 'cv'],
           rep: () => ({ html: `<p>Le site ne publie pas d'offres. Vous pouvez envoyer une candidature spontanée à ${MAIL}.</p>` })
@@ -6695,7 +6850,7 @@
           id: 'bot',
           mots: ['tu es qui', 'es tu un robot', 'robot', 'bot', 'ia', 'intelligence artificielle', 'chatgpt', 'vrai personne'],
           rep: () => ({
-            html: `<p>Je suis un assistant automatique : je réponds à partir du contenu de ce site et du dossier technique. Pour un avis sur votre cas précis, un membre de l'équipe vous répond au ${TEL_MOBILE}.</p>`,
+            html: `<p>Je suis un assistant automatique : je réponds à partir du contenu de ce site, du dossier technique et de notre site suisse. Pour un avis sur votre cas précis, un membre de l'équipe vous répond au ${TEL_MOBILE}.</p>`,
             choix: [B.appeler, B.whatsapp]
           })
         }
@@ -6708,6 +6863,8 @@
 
       // Sujet reconnu -> index dans « Nature du projet »
       const PROJET_PAR_SUJET = { thermique: 0, capacite: 0, pv: 1, panneaux: 1, autonomie: 1, pompes: 2, ventilation: 3, suivi: 4 };
+      // Sujets suisses : mémorisés pour rédiger le message WhatsApp, pas pour le formulaire
+      const SUJETS_SUISSES = ['chauffage', 'pac', 'sanitaire'];
       const BATIMENTS = [
         ['maison', 'villa', 'domicile', 'duplex', 'individuel', 'particulier'],
         ['immeuble', 'appartement', 'collectif', 'residence', 'cite', 'logement'],
@@ -6778,6 +6935,25 @@
         }).filter((r) => r.score >= 1.2).sort((a, b) => b.score - a.score || !!a.s.general - !!b.s.general);
       };
 
+      const suggestions = (jetons) => {
+        const pertinents = jetons.filter((j) => j.length >= 4);
+        if (!pertinents.length) return [];
+        return SUJETS.filter((x) => x.titre).map((x) => {
+          let score = 0;
+          for (const cle of x.cles) {
+            for (const mot of cle) {
+              if (mot.length < 4) continue;
+              for (const j of pertinents) {
+                if (j.slice(0, 4) === mot.slice(0, 4)) score += 1;
+                else if (mot.length >= 6 && distance(j, mot, 2) <= 2) score += 0.8;
+              }
+            }
+          }
+          return { x, score };
+        }).filter((r) => r.score >= 0.8).sort((a, b) => b.score - a.score).slice(0, 3)
+          .map((r) => ({ t: r.x.titre, q: r.x.mots[0] }));
+      };
+
       const NOMBRES = { un: 1, une: 1, deux: 2, trois: 3, quatre: 4, cinq: 5, six: 6, sept: 7, huit: 8, neuf: 9, dix: 10, onze: 11, douze: 12, quinze: 15, vingt: 20, trente: 30, cinquante: 50, cent: 100 };
 
       const lirePersonnes = (texte) => {
@@ -6801,8 +6977,31 @@
         return -1;
       };
 
+      /* --- Pays et villes ---
+         Le pays cité oriente les réponses (contact, adresse, urgence, devis, délais). */
+      const VILLES = [
+        ['Neuchâtel', 'ch', true, /\bneuchatel\b/], ['Lausanne', 'ch', true, /\blausanne\b/],
+        ['Yverdon-les-Bains', 'ch', true, /\byverdon\b/], ['Genève', 'ch', false, /\bgeneve\b/],
+        ['Fribourg', 'ch', false, /\bfribourg\b/], ['Berne', 'ch', false, /\bberne\b/],
+        ['La Chaux-de-Fonds', 'ch', false, /\bchaux de fonds\b/], ['Bienne', 'ch', false, /\bbienne\b/],
+        ['Montreux', 'ch', false, /\bmontreux\b/], ['Sion', 'ch', false, /\bsion\b/],
+        ['Yaoundé', 'cm', true, /\byaounde\b/], ['Douala', 'cm', false, /\bdouala\b/],
+        ['Bafoussam', 'cm', false, /\bbafoussam\b/], ['Garoua', 'cm', false, /\bgaroua\b/],
+        ['Kribi', 'cm', false, /\bkribi\b/], ['Bamenda', 'cm', false, /\bbamenda\b/],
+        ['Limbé', 'cm', false, /\blimbe\b/], ['Buea', 'cm', false, /\bbuea\b/],
+        ['Ngaoundéré', 'cm', false, /\bngaoundere\b/], ['Bertoua', 'cm', false, /\bbertoua\b/],
+        ['Ebolowa', 'cm', false, /\bebolowa\b/], ['Maroua', 'cm', false, /\bmaroua\b/]
+      ];
+
+      const lireLieu = (t) => {
+        for (const [nom, pays, servie, motif] of VILLES) if (motif.test(t)) return { nom, pays, servie };
+        if (/\b(suisse|romande|vaud|canton|chf)\b/.test(t)) return { pays: 'ch' };
+        if (/\b(cameroun|fcfa|cfa)\b/.test(t)) return { pays: 'cm' };
+        return null;
+      };
+
       /* --- Mémoire de la conversation --- */
-      const ctx = { sujet: null, dernier: null, personnes: null, batiment: null, offre: null, flux: null, rates: 0 };
+      const ctx = { sujet: null, dernier: null, personnes: null, batiment: null, offre: null, flux: null, rates: 0, pays: null, ville: null };
 
       /* --- Affichage --- */
       const defiler = () => { fil.scrollTop = fil.scrollHeight; };
@@ -6887,7 +7086,7 @@
 
       const agirBase = (c) => {
         retirerChoix();
-        if (c.act === 'devis') demarrerDevis(c.projet);
+        if (c.act === 'devis') { if (c.pays) ctx.pays = c.pays; demarrerDevis(c.projet); }
         else if (c.act === 'aller') allerA(c.cible);
         else if (c.act === 'catalogue' && typeof openCatalogue === 'function') openCatalogue();
       };
@@ -6895,6 +7094,16 @@
       /* --- Parcours devis --- */
       const demarrerDevis = (projetConnu) => {
         ctx.offre = null;
+        if (ctx.pays === 'ch' && projetConnu === undefined) {
+          const objet = { chauffage: 'le chauffage', pac: 'une pompe à chaleur', sanitaire: 'des travaux sanitaires', pv: 'une installation solaire', panneaux: 'une installation solaire', ventilation: 'la ventilation' }[ctx.dernier] || 'mon projet';
+          const ville = ctx.ville && ctx.ville.pays === 'ch' ? ` à ${ctx.ville.nom}` : '';
+          const texte = `Bonjour, je souhaite un devis pour ${objet}${ville}.`;
+          return ajouterBot(`<p>En Suisse, <strong>le devis est gratuit</strong>. Le plus simple est d'écrire sur WhatsApp : votre message est déjà prêt, vous pouvez le compléter avant de l'envoyer.</p>`, [
+            { t: 'Devis par WhatsApp', icone: 'ph-whatsapp-logo', href: 'https://wa.me/41793642442?text=' + encodeURIComponent(texte) },
+            B.appelerCH,
+            { t: 'Mon projet est au Cameroun', act: 'devis', projet: undefined, pays: 'cm' }
+          ]);
+        }
         ctx.flux = { etape: 'projet', projet: projetConnu, batiment: undefined };
         const proj = projetConnu !== undefined ? projetConnu : PROJET_PAR_SUJET[ctx.dernier];
         if (proj !== undefined) {
@@ -7008,14 +7217,20 @@
       const OUI = /^(oui|ouais|ok|okay|d accord|dac|volontiers|yes|vas y|allez|go|bien sur|avec plaisir|je veux bien|pourquoi pas)\b/;
       const NON = /^(non|nan|pas maintenant|plus tard|no|non merci)\b/;
 
-      const SANS_EFFET_SUR_SUJET = ['salut', 'merci', 'prix', 'duree', 'delai', 'devis', 'contact', 'garantie', 'methode', 'zone', 'horaires', 'adresse'];
+      // Ce qu'on demande sur un sujet ; prioritaire sur le sujet lui-même
+      const ASPECTS = ['depannage', 'subventions', 'prix', 'gratuit', 'duree', 'delai', 'suivi', 'garantie'];
+
+      const SANS_EFFET_SUR_SUJET = ['salut', 'merci', 'prix', 'duree', 'delai', 'devis', 'contact', 'garantie', 'methode', 'zone', 'horaires', 'adresse', 'depannage', 'gratuit', 'subventions', 'legal', 'suisse'];
 
       const repondre = (texte) => {
         const t = normaliser(texte);
         if (!t) return;
+        ctx.question = t;
 
         const p = lirePersonnes(texte);
         if (p) ctx.personnes = p;
+        const lieu = lireLieu(t);
+        if (lieu) { ctx.pays = lieu.pays; ctx.ville = lieu.nom ? lieu : null; }
         const b = lireBatiment(texte);
         if (b === 2) ctx.batiment = 'hotel';
         else if (b === 4 || /hopital|clinique/.test(t)) ctx.batiment = 'gros';
@@ -7031,8 +7246,24 @@
         const resultats = scorer(mots(texte));
         let choisi = resultats[0] && resultats[0].s;
 
+        // Un sujet (panneaux, chauffage…) et un aspect (prix, panne, subventions…) dans la même
+        // phrase : on répond à l'aspect, en retenant le sujet pour adapter la réponse.
+        // « Combien coûte une pompe à chaleur » donne le prix du chauffage, pas la fiche de la PAC.
+        const aspect = resultats.find((x) => ASPECTS.includes(x.s.id) && x.score >= 2);
+        if (aspect && choisi && choisi !== aspect.s && !ASPECTS.includes(choisi.id)) {
+          if (choisi.sujet) ctx.sujet = choisi.sujet;
+          if (PROJET_PAR_SUJET[choisi.id] !== undefined || SUJETS_SUISSES.includes(choisi.id)) ctx.dernier = choisi.id;
+          if (['chauffage', 'pac', 'freecooling'].includes(choisi.id) && !ctx.pays) ctx.pays = 'ch';
+          choisi = aspect.s;
+        }
+
+        // Une ville seule (« et à Lausanne ? ») : on répond sur la zone d'intervention
+        if (lieu && lieu.nom && (!choisi || ['salut', 'merci'].includes(choisi.id))) choisi = SUJETS.find((x) => x.id === 'zone');
+        // Le chauffage et le sanitaire suisses orientent vers la Suisse
+        if (choisi && ['chauffage', 'pac', 'freecooling'].includes(choisi.id) && !ctx.pays) ctx.pays = 'ch';
+
         // « Un devis pour un chauffe-eau » : la demande de devis prime, le sujet sert à la préremplir
-        if (/\b(devis|chiffrage|estimation)\b/.test(t)) {
+        if (/\b(devis|chiffrage|estimation)\b/.test(t) && !/\b(gratuit|gratuite|payant|payante|frais)\b/.test(t)) {
           const sujet = resultats.find((x) => PROJET_PAR_SUJET[x.s.id] !== undefined);
           if (sujet) ctx.dernier = sujet.s.id;
           return demarrerDevis();
@@ -7054,6 +7285,11 @@
             return ajouterBot(`<p>Je ne trouve pas la réponse, désolé. Un membre de l'équipe vous répondra directement : ${TEL_MOBILE}, ou sur WhatsApp.</p>`,
               [B.appeler, B.whatsapp, B.devis]);
           }
+          // Des sujets qui ressemblent à ce qui a été écrit, plutôt qu'une liste générique
+          const proches = suggestions(mots(texte));
+          if (proches.length) {
+            return ajouterBot('<p>Je ne suis pas sûr d\'avoir compris. Vouliez-vous parler de :</p>', proches);
+          }
           return ajouterBot('<p>Je n\'ai pas bien saisi. Je peux vous renseigner sur ces sujets :</p>', ACCUEIL);
         }
         ctx.rates = 0;
@@ -7061,12 +7297,14 @@
         const r = choisi.rep(ctx);
         if (choisi.sujet) ctx.sujet = choisi.sujet;
         // Le sujet sert à préremplir un devis demandé ensuite ; les échanges neutres ne l'effacent pas
-        if (PROJET_PAR_SUJET[choisi.id] !== undefined) ctx.dernier = choisi.id;
+        if (PROJET_PAR_SUJET[choisi.id] !== undefined || SUJETS_SUISSES.includes(choisi.id)) ctx.dernier = choisi.id;
         else if (!SANS_EFFET_SUR_SUJET.includes(choisi.id)) ctx.dernier = null;
         if (r.act === 'devis') return demarrerDevis();
 
         // Deuxième sujet détecté dans la même phrase : proposé en bouton
-        const second = resultats.find((x) => x.s !== choisi && x.score >= 2 && x.s.titre);
+        const second = resultats.find((x) => x.s !== choisi && x.score >= 2 && x.s.titre
+          // « pompe à chaleur » contient « pompe » : pas de renvoi vers les surpresseurs
+          && !(x.s.id === 'pompes' && choisi.id === 'pac'));
         let choix = (r.choix || []).slice();
         if (second && !choix.some((c) => c.q && scorer(mots(c.q))[0]?.s === second.s)) {
           choix.unshift({ t: second.s.titre, q: second.s.mots[0] });
@@ -7087,7 +7325,7 @@
       let demarre = false;
 
       const accueillir = () => {
-        ajouterBot('<p>Bonjour ! Je suis l\'assistant de <strong>Saphir M. Groupe</strong>.</p><p>Je réponds sur le solaire thermique, le photovoltaïque, les pompes, la ventilation, nos méthodes, et je peux préparer votre demande de devis.</p>', ACCUEIL);
+        ajouterBot('<p>Bonjour ! Je suis l\'assistant de <strong>Saphir M. Groupe</strong>.</p><p>Je réponds sur nos activités <strong>au Cameroun</strong> (solaire thermique, photovoltaïque, pompes, ventilation, bâtiment) et <strong>en Suisse romande</strong> (chauffage, sanitaire, ventilation, solaire). Je peux aussi préparer votre demande de devis.</p>', ACCUEIL);
       };
 
       const memo = (cle, val) => {
@@ -7117,7 +7355,7 @@
         file = Promise.resolve();
         bot.classList.remove('bot-reflechit');
         fil.innerHTML = '';
-        Object.assign(ctx, { sujet: null, dernier: null, personnes: null, batiment: null, offre: null, flux: null, rates: 0 });
+        Object.assign(ctx, { pays: null, ville: null, sujet: null, dernier: null, personnes: null, batiment: null, offre: null, flux: null, rates: 0 });
         accueillir();
         champ.focus();
       });

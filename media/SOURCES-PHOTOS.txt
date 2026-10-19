@@ -74,3 +74,21 @@ Extraites du dossier technique (media/technique.pdf), pages 5, 6 et 17 :
     thermique-ballon.webp            page 17 (recadrée)
 Ce sont des équipements types, pas des chantiers Saphir : les légendes
 décrivent l'équipement. Même nom de fichier pour les remplacer.
+
+
+5. GALERIE NUMÉROTÉE DU SOLAIRE THERMIQUE (photos 05 à 10)
+----------------------------------------------------------
+Domaine public, Wikimedia Commons (aucune mention obligatoire) :
+    thermique-plans-tuiles.webp     Bernd Rieke
+        https://commons.wikimedia.org/wiki/File:Kollektoranlage.JPG
+    thermique-tube-detail.webp      Rebecca Schmidt, U.S. Department of Energy
+        https://commons.wikimedia.org/wiki/File:Schmidt_000273_170624_515287_4578_(36792471332).jpg
+    thermique-tubes-controle.webp   Rebecca Schmidt, U.S. Department of Energy
+        https://commons.wikimedia.org/wiki/File:Schmidt_000454_170444_515290_4578_(36792942252).jpg
+    thermique-hopital.webp          Chixoy
+        https://commons.wikimedia.org/wiki/File:Plaques_solars_Hospital_d%27Inca.JPG
+    thermique-levage.webp           U.S. Navy, Thomas Obungen
+        https://commons.wikimedia.org/wiki/File:US_Navy_110623-N-UZ680-002_A_crane_hoists_solar_hot_water_panels_onto_the_roof_of_Building_1315,_the_bachelor_officer_quarters,_at_Joint_Base_Pearl.jpg
+    thermique-champ-capteurs.webp   Gunnar Bach Pedersen
+        https://commons.wikimedia.org/wiki/File:Ulsted_solvarme1.jpg
+Photos 01 à 04 : voir la section 4 (dossier technique).

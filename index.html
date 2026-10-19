@@ -4021,21 +4021,35 @@
       .footer-legal { justify-content: center; }
     }
 
-    /* ---------- SOLAIRE THERMIQUE EN IMAGES ---------- */
+    /* ---------- SOLAIRE THERMIQUE EN IMAGES ----------
+       Mosaïque de 4 colonnes : les photos 1 et 6 occupent deux colonnes,
+       pour casser la grille sans désordre. Chaque photo porte son numéro. */
+    .pole-galerie-tete { margin-top: 64px; margin-bottom: 18px; }
+    .pole-galerie-tete h3 {
+      font-family: var(--display);
+      font-size: 1.5rem;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .pole-galerie-tete p { color: var(--text-light); }
+
     .pole-galerie {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-top: 56px;
+      grid-auto-rows: 230px;
+      gap: 14px;
     }
+
+    .pole-galerie-photo:nth-child(1),
+    .pole-galerie-photo:nth-child(6) { grid-column: span 2; }
 
     .pole-galerie-photo {
       position: relative;
       margin: 0;
-      height: 250px;
       border-radius: 10px;
       overflow: hidden;
       box-shadow: var(--shadow-sm);
+      background: var(--night-blue-2);
     }
 
     .pole-galerie-photo img {
@@ -4048,16 +4062,31 @@
 
     .pole-galerie-photo:hover img { transform: scale(1.05); }
 
+    .pole-galerie-num {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      min-width: 34px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: var(--gold);
+      color: var(--night-blue);
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
     .pole-galerie-photo figcaption {
       position: absolute;
       left: 10px;
       right: 10px;
       bottom: 10px;
-      padding: 10px 12px;
+      padding: 9px 12px;
       border-radius: 8px;
       background: rgba(10, 26, 47, 0.86);
       color: #ffffff;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       line-height: 1.35;
     }
 
@@ -4072,24 +4101,25 @@
     }
 
     @media (max-width: 1024px) {
-      .pole-galerie { grid-template-columns: repeat(2, 1fr); }
+      .pole-galerie { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 210px; }
+      .pole-galerie-photo:nth-child(6) { grid-column: span 1; }
     }
 
     /* Mobile : carrousel à faire glisser, comme les autres listes */
     @media (max-width: 768px) {
+      .pole-galerie-tete { margin-top: 44px; }
       .pole-galerie {
         display: flex;
         gap: 14px;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         scroll-padding: 0 24px;
-        margin: 40px -24px 0;
+        margin: 0 -24px;
         padding: 6px 24px 10px;
         scrollbar-width: none;
       }
       .pole-galerie::-webkit-scrollbar { display: none; }
-      .pole-galerie > * { flex: 0 0 82%; scroll-snap-align: start; }
-      .pole-galerie-photo { height: 240px; }
+      .pole-galerie > * { flex: 0 0 82%; scroll-snap-align: start; height: 240px; }
     }
 
     /* ---------- ASSISTANT : questions types ---------- */
@@ -4440,23 +4470,61 @@
         </div>
       </div>
 
-      <!-- Équipements types, tirés du dossier technique (pas des chantiers Saphir) -->
+      <!-- Équipements types (dossier technique et photos libres de droits), pas des chantiers Saphir -->
+      <div class="pole-galerie-tete">
+        <h3>Le solaire thermique en images</h3>
+        <p>Dix photos, de la toiture au local technique.</p>
+      </div>
       <div class="pole-galerie" aria-label="Le solaire thermique en images">
-        <figure class="pole-galerie-photo reveal reveal-delay-1">
+        <figure class="pole-galerie-photo reveal">
           <img src="media/thermique-tubes-sous-vide.webp" width="900" height="500" loading="lazy" alt="Capteurs solaires à tubes sous vide posés sur une toiture en tuiles">
+          <span class="pole-galerie-num" aria-hidden="true">01</span>
           <figcaption><span>Tubes sous vide</span>Le vide isole les tubes et limite les pertes</figcaption>
         </figure>
-        <figure class="pole-galerie-photo reveal reveal-delay-2">
+        <figure class="pole-galerie-photo reveal">
           <img src="media/thermique-capteurs-plans.webp" width="688" height="690" loading="lazy" alt="Deux capteurs solaires plans vitrés installés sur une toiture en tuiles">
+          <span class="pole-galerie-num" aria-hidden="true">02</span>
           <figcaption><span>Capteurs plans vitrés</span>Absorbeur sélectif sous verre trempé</figcaption>
         </figure>
-        <figure class="pole-galerie-photo reveal reveal-delay-3">
+        <figure class="pole-galerie-photo reveal">
           <img src="media/thermique-thermosiphon.webp" width="719" height="363" loading="lazy" alt="Chauffe-eau solaire à thermosiphon : rangée de tubes surmontée d'un ballon">
+          <span class="pole-galerie-num" aria-hidden="true">03</span>
           <figcaption><span>Thermosiphon</span>Circulation naturelle, sans pompe</figcaption>
         </figure>
-        <figure class="pole-galerie-photo reveal reveal-delay-4">
+        <figure class="pole-galerie-photo reveal">
           <img src="media/thermique-ballon.webp" width="625" height="820" loading="lazy" alt="Ballon d'eau chaude solaire et vase d'expansion rouge dans un local technique">
+          <span class="pole-galerie-num" aria-hidden="true">04</span>
           <figcaption><span>Ballon de stockage</span>Avec vase d'expansion et groupe de sécurité</figcaption>
+        </figure>
+        <figure class="pole-galerie-photo reveal">
+          <img src="media/thermique-plans-tuiles.webp" width="1000" height="1334" loading="lazy" alt="Rangée de capteurs solaires plans posés sur un toit en tuiles rouges">
+          <span class="pole-galerie-num" aria-hidden="true">05</span>
+          <figcaption><span>Pose en toiture</span>Capteurs plans intégrés aux tuiles</figcaption>
+        </figure>
+        <figure class="pole-galerie-photo reveal">
+          <img src="media/thermique-tube-detail.webp" width="1000" height="750" loading="lazy" alt="Vue de l'intérieur d'un tube sous vide : absorbeur et caloduc en cuivre">
+          <span class="pole-galerie-num" aria-hidden="true">06</span>
+          <figcaption><span>Dans un tube sous vide</span>L'absorbeur et son caloduc</figcaption>
+        </figure>
+        <figure class="pole-galerie-photo reveal">
+          <img src="media/thermique-tubes-controle.webp" width="1000" height="750" loading="lazy" alt="Main nettoyant les tubes d'un capteur solaire à tubes sous vide">
+          <span class="pole-galerie-num" aria-hidden="true">07</span>
+          <figcaption><span>Entretien des tubes</span>Nettoyage et contrôle visuel</figcaption>
+        </figure>
+        <figure class="pole-galerie-photo reveal">
+          <img src="media/thermique-hopital.webp" width="1000" height="750" loading="lazy" alt="Capteurs solaires thermiques sur le toit d'un hôpital">
+          <span class="pole-galerie-num" aria-hidden="true">08</span>
+          <figcaption><span>Hôpital</span>Eau chaude sanitaire en toiture</figcaption>
+        </figure>
+        <figure class="pole-galerie-photo reveal">
+          <img src="media/thermique-levage.webp" width="1000" height="666" loading="lazy" alt="Grue hissant des capteurs solaires thermiques sur le toit d'un immeuble">
+          <span class="pole-galerie-num" aria-hidden="true">09</span>
+          <figcaption><span>Mise en place</span>Levage des capteurs sur un immeuble</figcaption>
+        </figure>
+        <figure class="pole-galerie-photo reveal">
+          <img src="media/thermique-champ-capteurs.webp" width="1000" height="748" loading="lazy" alt="Longues rangées de capteurs solaires thermiques posés au sol">
+          <span class="pole-galerie-num" aria-hidden="true">10</span>
+          <figcaption><span>Champ de capteurs</span>Grande installation au sol</figcaption>
         </figure>
       </div>
     </div>

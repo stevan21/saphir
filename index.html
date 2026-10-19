@@ -6349,9 +6349,9 @@
       const TEL_FIXE = '<a href="tel:+237222201607">+237 222 20 16 07</a>';
       const TEL_MOBILE = '<a href="tel:+237695515326">+237 695 515 326</a>';
       const WA_CM = '<a href="https://wa.me/237695515326" target="_blank" rel="noopener">+237 695 515 326</a>';
-      // Suisse : coordonnées publiées sur saphirmgroupe.ch (SAPHIR M. GROUPE Sàrl, Neuchâtel)
+      // Suisse (SAPHIR M. GROUPE Sàrl, Neuchâtel) : un seul numéro, téléphone et WhatsApp
       const TEL_CH = '<a href="tel:+41783418757">+41 78 341 87 57</a>';
-      const WA_CH = '<a href="https://wa.me/41793642442" target="_blank" rel="noopener">+41 79 364 24 42</a>';
+      const WA_CH = '<a href="https://wa.me/41783418757" target="_blank" rel="noopener">+41 78 341 87 57</a>';
       const ADRESSE_CH = 'Rte des Falaises 7, 2000 Neuchâtel';
       const MAIL = '<a href="mailto:info@saphirmgroupe.com">info@saphirmgroupe.com</a>';
 
@@ -6381,7 +6381,7 @@
         depannage: { t: 'Dépannage', q: 'J\'ai une panne' },
         subventions: { t: 'Subventions', q: 'Les subventions' },
         appelerCH: { t: 'Appeler (Suisse)', icone: 'ph-phone', href: 'tel:+41783418757' },
-        whatsappCH: { t: 'WhatsApp (Suisse)', icone: 'ph-whatsapp-logo', href: 'https://wa.me/41793642442' }
+        whatsappCH: { t: 'WhatsApp (Suisse)', icone: 'ph-whatsapp-logo', href: 'https://wa.me/41783418757' }
       };
 
       const ACCUEIL = [B.thermique, B.pv, B.autres, B.suisse, B.prix, B.devis, B.contact];
@@ -6686,7 +6686,7 @@
           mots: ['contact', 'contacter', 'joindre', 'telephone', 'numero', 'appeler', 'appel', 'whatsapp', 'email', 'mail', 'courriel', 'ecrire', 'parler a quelqu un', 'conseiller', 'humain', 'commercial', 'agent', 'technicien'],
           rep: (ctx) => {
             const cm = `<p><strong>Cameroun (Yaoundé)</strong></p><ul><li>Fixe : ${TEL_FIXE}</li><li>Mobile et WhatsApp : ${WA_CM}</li><li>Courriel : ${MAIL}</li></ul>`;
-            const ch = `<p><strong>Suisse (Neuchâtel)</strong></p><ul><li>Téléphone : ${TEL_CH}</li><li>WhatsApp : ${WA_CH}</li></ul>`;
+            const ch = `<p><strong>Suisse (Neuchâtel)</strong></p><ul><li>Téléphone et WhatsApp : ${TEL_CH}</li></ul>`;
             if (ctx.pays === 'ch') return { html: ch, choix: [B.appelerCH, B.whatsappCH, B.devis] };
             if (ctx.pays === 'cm') return { html: cm + '<p>Le téléphone reste le plus rapide.</p>', choix: [B.appeler, B.whatsapp, B.devis] };
             return { html: cm + ch + '<p>Le téléphone reste le plus rapide.</p>', choix: [B.appeler, B.whatsapp, B.appelerCH, B.devis] };
@@ -6763,7 +6763,7 @@
               <li><strong>Sanitaire</strong> : salles de bain, cuisines, rénovation, fuites</li>
               <li><strong>Ventilation</strong> : VMC simple et double flux</li>
               <li><strong>Solaire</strong> : panneaux photovoltaïques, batteries, aide aux subventions</li></ul>
-              <p>Devis gratuit, dépannage d'urgence : ${TEL_CH} ou WhatsApp ${WA_CH}.</p>`,
+              <p>Devis gratuit, dépannage d'urgence : ${TEL_CH}, par téléphone ou WhatsApp.</p>`,
             choix: [B.chauffage, B.sanitaire, B.depannage, B.whatsappCH]
           })
         },
@@ -6815,7 +6815,7 @@
           titre: 'Dépannage',
           mots: ['urgence', 'urgent', 'depannage', 'depanner', 'panne', 'en panne', 'ne chauffe plus', 'ne marche plus', 'ne fonctionne plus', 'fuite', 'fuite d eau', 'plus d eau chaude', 'pas d eau chaude', 'chaudiere en panne', 'bruit', 'bruits', 'pression basse', 'probleme', 'reparation urgente', 'intervention rapide'],
           rep: (ctx) => {
-            const ch = `<p><strong>En Suisse romande</strong> : dépannage annoncé 24 h/24, intervention en général sous 24 heures. Appelez le ${TEL_CH} ou écrivez sur WhatsApp au ${WA_CH}.</p>`;
+            const ch = `<p><strong>En Suisse romande</strong> : dépannage annoncé 24 h/24, intervention en général sous 24 heures. Appelez ou écrivez sur WhatsApp au ${TEL_CH}.</p>`;
             const cm = `<p><strong>Au Cameroun</strong> : maintenance curative sur demande ou sous astreinte, avec un stock de pièces à Yaoundé. Appelez le ${TEL_MOBILE}.</p>`;
             const conseil = '<p>En attendant, notez ce que vous observez (bruit, fuite, pression, message d\'erreur) : le diagnostic sera plus rapide.</p>';
             if (ctx.pays === 'ch') return { html: ch + conseil, choix: [B.appelerCH, B.whatsappCH] };
@@ -7116,7 +7116,7 @@
           const ville = ctx.ville && ctx.ville.pays === 'ch' ? ` à ${ctx.ville.nom}` : '';
           const texte = `Bonjour, je souhaite un devis pour ${objet}${ville}.`;
           return ajouterBot(`<p>En Suisse, <strong>le devis est gratuit</strong>. Le plus simple est d'écrire sur WhatsApp : votre message est déjà prêt, vous pouvez le compléter avant de l'envoyer.</p>`, [
-            { t: 'Devis par WhatsApp', icone: 'ph-whatsapp-logo', href: 'https://wa.me/41793642442?text=' + encodeURIComponent(texte) },
+            { t: 'Devis par WhatsApp', icone: 'ph-whatsapp-logo', href: 'https://wa.me/41783418757?text=' + encodeURIComponent(texte) },
             B.appelerCH,
             { t: 'Mon projet est au Cameroun', act: 'devis', projet: undefined, pays: 'cm' }
           ]);
@@ -7292,7 +7292,7 @@
       const HORS_SUJET = /\b(meteo|quel temps fait|temps qu il fait|il pleut|blague|devinette|president|politique|election|ministre|football|foot|match|ligue|coupe du monde|recette|film|serie|musique|chanson|religion|horoscope|bitcoin|crypto|bourse|devoir|exercice|mathematique|traduis|traduction|capitale|poeme|histoire drole|qui es tu amoureux|ton age|quel age as tu)\b/;
 
       // Ce qu'on demande sur un sujet ; prioritaire sur le sujet lui-même
-      const ASPECTS = ['depannage', 'subventions', 'prix', 'gratuit', 'duree', 'delai', 'suivi', 'garantie'];
+      const ASPECTS = ['depannage', 'subventions', 'prix', 'gratuit', 'duree', 'delai', 'suivi', 'garantie', 'contact', 'adresse', 'horaires'];
 
       const SANS_EFFET_SUR_SUJET = ['salut', 'merci', 'prix', 'duree', 'delai', 'devis', 'contact', 'garantie', 'methode', 'zone', 'horaires', 'adresse', 'depannage', 'gratuit', 'subventions', 'legal', 'suisse'];
 

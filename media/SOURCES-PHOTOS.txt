@@ -92,3 +92,29 @@ Domaine public, Wikimedia Commons (aucune mention obligatoire) :
     thermique-champ-capteurs.webp   Gunnar Bach Pedersen
         https://commons.wikimedia.org/wiki/File:Ulsted_solvarme1.jpg
 Photos 01 à 04 : voir la section 4 (dossier technique).
+
+
+6. GALERIE NUMÉROTÉE DU PHOTOVOLTAÏQUE (section Métier 02)
+-----------------------------------------------------------
+Domaine public ou CC0, Wikimedia Commons (aucune mention obligatoire).
+Ce ne sont PAS des chantiers Saphir : les légendes décrivent l'activité.
+    pv-pose-toiture.webp     01  Stephen Yang / The Solutions Project (domaine public)
+        https://commons.wikimedia.org/wiki/File:Technicians_working_on_a_solar_panel_installation_(9234).jpg
+    pv-porte-module.webp     02  Stephen Yang / The Solutions Project (domaine public)
+        https://commons.wikimedia.org/wiki/File:Technicians_working_on_a_solar_panel_installation_(9235).jpg
+    pv-nettoyage.webp        03  Destin Bavibidila Mario, Kinshasa (CC0)
+        https://commons.wikimedia.org/wiki/File:Destin_Bavibidila_Mario_installing_solar_panels_in_Kinshasa_DRC.jpg
+    pv-preparation-kit.webp  04  Ngostary2k (CC0)
+        https://commons.wikimedia.org/wiki/File:Men_working_on_the_solar_panel_01.jpg
+    pv-regulateur.webp       05  Cody Kabus, U.S. Department of Energy (domaine public)
+        https://commons.wikimedia.org/wiki/File:Kabus_000245_171295_516064_4578_(36775931446).jpg
+    pv-onduleurs.webp        06  Stephen Coffrin, U.S. Department of Energy (domaine public)
+        https://commons.wikimedia.org/wiki/File:Coffrin_000230_172953_518347_4578_(36963545085).jpg
+    pv-stockage.webp         07  Bureau of Land Management California (domaine public)
+        https://commons.wikimedia.org/wiki/File:Desert_Sunlight_Battery_Energy_Storage_System_(52945816430).jpg
+    pv-ombriere.webp         08  U.S. Department of Energy (domaine public)
+        https://commons.wikimedia.org/wiki/File:Solar_carport_(9078555412).jpg
+    pv-transport.webp        09  IAfrica76 / Innovation Africa (CC0)
+        https://commons.wikimedia.org/wiki/File:Innovation_Africa_-_solar_panels.jpg
+    pv-toiture-maison.webp   10  Roy Bury (CC0)
+        https://commons.wikimedia.org/wiki/File:Solar_Energy_Roof_Solar_Power_Generation_2666770_CC0.jpg

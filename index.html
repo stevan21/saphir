@@ -4122,6 +4122,193 @@
       .pole-galerie > * { flex: 0 0 82%; scroll-snap-align: start; height: 240px; }
     }
 
+    /* ---------- NOS CHANTIERS EN PHOTOS ----------
+       Grille carrée filtrable ; 12 vignettes d'abord, le reste au clic.
+       Un clic sur une vignette ouvre la visionneuse (<dialog>). */
+    .chantiers { background: var(--light); }
+
+    .chantiers-filtres {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .chantiers-filtre {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--gray);
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .chantiers-filtre span {
+      min-width: 26px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--gray);
+      font-size: 0.78rem;
+      text-align: center;
+    }
+    .chantiers-filtre:hover { border-color: var(--gold); }
+    .chantiers-filtre.actif { background: var(--gold); border-color: var(--gold); color: var(--night-blue); }
+    .chantiers-filtre.actif span { background: rgba(10, 26, 47, 0.14); }
+
+    .chantiers-grille {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .chantier { position: relative; margin: 0; }
+    .chantier[hidden] { display: none; }
+
+    .chantier-ouvrir {
+      display: block;
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      padding: 0;
+      border: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--night-blue-2);
+      box-shadow: var(--shadow-sm);
+      cursor: zoom-in;
+    }
+    .chantier-ouvrir img,
+    .chantier-ouvrir video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .chantier-ouvrir:hover img,
+    .chantier-ouvrir:hover video { transform: scale(1.06); }
+    .chantier-ouvrir:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+    .chantier-video {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--night-blue);
+      font-size: 0.9rem;
+    }
+
+    .chantier figcaption {
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(10, 26, 47, 0.86);
+      color: #ffffff;
+      font-size: 0.8rem;
+      line-height: 1.3;
+      pointer-events: none;
+    }
+    .chantier figcaption span {
+      display: block;
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 0.86rem;
+    }
+
+    .chantiers-plus { display: flex; justify-content: center; margin-top: 28px; }
+    .chantiers-plus[hidden] { display: none; }
+
+    /* Visionneuse */
+    .chantiers-visionneuse {
+      width: 100vw;
+      height: 100vh;
+      max-width: none;
+      max-height: none;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: rgba(5, 13, 24, 0.94);
+      color: #ffffff;
+    }
+    .chantiers-visionneuse[open] {
+      display: grid;
+      grid-template-columns: 64px 1fr 64px;
+      align-items: center;
+    }
+    .chantiers-visionneuse::backdrop { background: rgba(5, 13, 24, 0.6); }
+    .visionneuse-cadre {
+      grid-column: 2;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .visionneuse-media img,
+    .visionneuse-media video {
+      display: block;
+      max-width: 100%;
+      max-height: calc(100vh - 120px);
+      border-radius: 10px;
+    }
+    .visionneuse-legende { text-align: center; font-size: 0.95rem; }
+    .visionneuse-legende span { color: var(--gold); font-weight: 700; margin-right: 8px; }
+    .visionneuse-nav,
+    .visionneuse-fermer {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      justify-self: center;
+    }
+    .visionneuse-nav:hover, .visionneuse-fermer:hover { background: var(--gold); color: var(--night-blue); }
+    .visionneuse-prec { grid-column: 1; grid-row: 1; }
+    .visionneuse-suiv { grid-column: 3; grid-row: 1; }
+    .visionneuse-fermer { position: absolute; top: 16px; right: 16px; z-index: 1; }
+
+    @media (max-width: 1024px) {
+      .chantiers-grille { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .chantiers-filtres {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        margin: 0 -24px 22px;
+        padding: 2px 24px;
+        scrollbar-width: none;
+      }
+      .chantiers-filtres::-webkit-scrollbar { display: none; }
+      .chantiers-filtre { flex: 0 0 auto; }
+      .chantiers-grille { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .chantier figcaption { left: 6px; right: 6px; bottom: 6px; padding: 6px 8px; font-size: 0.72rem; }
+      .chantier figcaption span { font-size: 0.78rem; }
+      .chantiers-visionneuse[open] { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr auto; }
+      .visionneuse-cadre { grid-column: 1 / -1; grid-row: 1; padding: 0 12px; }
+      .visionneuse-prec { grid-column: 1; grid-row: 2; margin-bottom: 24px; }
+      .visionneuse-suiv { grid-column: 2; grid-row: 2; margin-bottom: 24px; }
+      .visionneuse-media img, .visionneuse-media video { max-height: calc(100vh - 200px); }
+    }
+
     /* ---------- ASSISTANT : questions types ---------- */
     .bot-choix .bot-question {
       width: 100%;
@@ -4868,6 +5055,258 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- NOS CHANTIERS EN PHOTOS : photos et vidéos de chantier fournies par Saphir (media/image saphir) -->
+  <section class="section chantiers" id="chantiers">
+    <div class="container">
+      <div class="badge reveal">Sur le terrain</div>
+      <h2 class="section-title reveal">Nos chantiers en photos</h2>
+      <p class="section-subtitle reveal">Photovoltaïque, solaire thermique, chaufferies et réseaux : des installations prises en photo pendant et après la pose.</p>
+
+      <div class="chantiers-filtres reveal" role="group" aria-label="Filtrer les photos">
+        <button type="button" class="chantiers-filtre actif" data-filtre="tous" aria-pressed="true">Tous <span>36</span></button>
+        <button type="button" class="chantiers-filtre" data-filtre="pv" aria-pressed="false">Photovoltaïque <span>13</span></button>
+        <button type="button" class="chantiers-filtre" data-filtre="th" aria-pressed="false">Solaire thermique <span>12</span></button>
+        <button type="button" class="chantiers-filtre" data-filtre="ch" aria-pressed="false">Chauffage &amp; sanitaire <span>11</span></button>
+      </div>
+
+      <div class="chantiers-grille replie" id="chantiersGrille">
+        <figure class="chantier" data-cat="pv">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/pv-01.webp" aria-label="Agrandir : Toiture plate">
+            <img src="media/chantiers/mini/pv-01.webp" width="600" height="800" loading="lazy" alt="Rangées de modules photovoltaïques sur une toiture plate gravillonnée">
+          </button>
+          <figcaption><span>Toiture plate</span>Champ de modules sur lests béton</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="pv">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/pv-02.webp" aria-label="Agrandir : Modules inclinés">
+            <img src="media/chantiers/mini/pv-02.webp" width="800" height="600" loading="lazy" alt="Modules photovoltaïques inclinés posés sur des plots en béton">
+          </button>
+          <figcaption><span>Modules inclinés</span>Structure lestée, sans percer l'étanchéité</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="pv">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/pv-03.webp" aria-label="Agrandir : Vue d'ensemble">
+            <img src="media/chantiers/mini/pv-03.webp" width="600" height="800" loading="lazy" alt="Vue d'ensemble des rangées de modules photovoltaïques en toiture">
+          </button>
+          <figcaption><span>Vue d'ensemble</span>Rangées de modules sur gravier</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="pv">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/pv-04.webp" aria-label="Agrandir : Allée technique">
+            <img src="media/chantiers/mini/pv-04.webp" width="600" height="800" loading="lazy" alt="Allée entre deux rangées de modules photovoltaïques en toiture">
+          </button>
+          <figcaption><span>Allée technique</span>Un passage pour l'entretien</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="pv">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/pv-05.webp" aria-label="Agrandir : Supports lestés">
+            <img src="media/chantiers/mini/pv-05.webp" width="600" height="800" loading="lazy" alt="Modules photovoltaïques sur supports lestés par des plots en béton">
+          </button>
+          <figcaption><span>Supports lestés</span>Plots béton posés sur la toiture</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="pv">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/pv-06.webp" aria-label="Agrandir : Rangées parallèles">
+            <img src="media/chantiers/mini/pv-06.webp" width="600" height="800" loading="lazy" alt="Rangées parallèles de modules photovoltaïques en toiture">
+          </button>
+          <figcaption><span>Rangées parallèles</span>Espacées pour éviter l'ombrage</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="pv">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/pv-07.webp" aria-label="Agrandir : Coffret technique">
+            <img src="media/chantiers/mini/pv-07.webp" width="600" height="800" loading="lazy" alt="Coffret technique en inox au milieu des modules photovoltaïques">
+          </button>
+          <figcaption><span>Coffret technique</span>Abri inox au bout du champ</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="pv">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/pv-08.webp" aria-label="Agrandir : Double pente">
+            <img src="media/chantiers/mini/pv-08.webp" width="600" height="800" loading="lazy" alt="Longue rangée de modules photovoltaïques posés dos à dos">
+          </button>
+          <figcaption><span>Double pente</span>Modules posés dos à dos</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="pv">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/pv-09.webp" aria-label="Agrandir : Abri des onduleurs">
+            <img src="media/chantiers/mini/pv-09.webp" width="600" height="800" loading="lazy" alt="Abri inox ouvert abritant les onduleurs en toiture">
+          </button>
+          <figcaption><span>Abri des onduleurs</span>Protégés des intempéries</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="pv">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/pv-10.webp" aria-label="Agrandir : Fin de chantier">
+            <img src="media/chantiers/mini/pv-10.webp" width="800" height="600" loading="lazy" alt="Toiture plate entièrement couverte de modules photovoltaïques">
+          </button>
+          <figcaption><span>Fin de chantier</span>Toiture entièrement équipée</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="pv">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/pv-11.webp" aria-label="Agrandir : Grande rangée">
+            <img src="media/chantiers/mini/pv-11.webp" width="600" height="800" loading="lazy" alt="Grande rangée de modules photovoltaïques sur une toiture gravillonnée">
+          </button>
+          <figcaption><span>Grande rangée</span>Modules alignés sur toute la longueur</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="pv">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/pv-12.webp" aria-label="Agrandir : Onduleurs">
+            <img src="media/chantiers/mini/pv-12.webp" width="600" height="800" loading="lazy" alt="Onduleurs et coffret de protection raccordés dans l'abri technique">
+          </button>
+          <figcaption><span>Onduleurs</span>Raccordement et protections</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="pv">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/pv-13.webp" aria-label="Agrandir : Pose en cours">
+            <img src="media/chantiers/mini/pv-13.webp" width="600" height="800" loading="lazy" alt="Techniciens en tenue orange posant des modules photovoltaïques">
+          </button>
+          <figcaption><span>Pose en cours</span>L'équipe sur la toiture</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="th">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/th-01.webp" aria-label="Agrandir : Tubes sous vide">
+            <img src="media/chantiers/mini/th-01.webp" width="800" height="600" loading="lazy" alt="Capteurs solaires à tubes sous vide en toiture">
+          </button>
+          <figcaption><span>Tubes sous vide</span>Capteurs en toiture</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="th">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/th-02.webp" aria-label="Agrandir : Capteurs plans">
+            <img src="media/chantiers/mini/th-02.webp" width="800" height="600" loading="lazy" alt="Capteurs solaires plans posés sur un toit-terrasse">
+          </button>
+          <figcaption><span>Capteurs plans</span>Sur un toit-terrasse</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="th">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/th-03.webp" aria-label="Agrandir : Capteur plan">
+            <img src="media/chantiers/mini/th-03.webp" width="600" height="800" loading="lazy" alt="Capteur solaire plan monté en bordure de toiture">
+          </button>
+          <figcaption><span>Capteur plan</span>Monté en bordure de toiture</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="th">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/th-04.webp" aria-label="Agrandir : Champ de capteurs">
+            <img src="media/chantiers/mini/th-04.webp" width="800" height="600" loading="lazy" alt="Rangée de capteurs solaires plans sur un toit plat gravillonné">
+          </button>
+          <figcaption><span>Champ de capteurs</span>Toit plat gravillonné</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="th">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/th-05.webp" aria-label="Agrandir : Sur tuiles">
+            <img src="media/chantiers/mini/th-05.webp" width="600" height="756" loading="lazy" alt="Deux capteurs solaires plans posés sur une toiture en tuiles">
+          </button>
+          <figcaption><span>Sur tuiles</span>Deux capteurs plans en surimposition</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="th">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/th-06.webp" aria-label="Agrandir : Tubes sur tuiles">
+            <img src="media/chantiers/mini/th-06.webp" width="776" height="600" loading="lazy" alt="Capteur solaire à tubes sous vide posé sur une toiture en tuiles">
+          </button>
+          <figcaption><span>Tubes sur tuiles</span>Capteur à tubes sous vide</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="th">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/th-07.webp" aria-label="Agrandir : Toit-terrasse">
+            <img src="media/chantiers/mini/th-07.webp" width="800" height="600" loading="lazy" alt="Capteurs solaires et conduites isolées sur un toit-terrasse">
+          </button>
+          <figcaption><span>Toit-terrasse</span>Capteurs et conduites isolées</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="th">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/th-08.webp" aria-label="Agrandir : Pose intégrée">
+            <img src="media/chantiers/mini/th-08.webp" width="800" height="600" loading="lazy" alt="Capteur solaire plan en cours d'intégration dans une toiture">
+          </button>
+          <figcaption><span>Pose intégrée</span>Capteur en cours d'intégration</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="th">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/th-09.webp" aria-label="Agrandir : Rangée de capteurs">
+            <img src="media/chantiers/mini/th-09.webp" width="600" height="800" loading="lazy" alt="Rangée de capteurs solaires plans en toiture">
+          </button>
+          <figcaption><span>Rangée de capteurs</span>Capteurs plans en toiture</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="th">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/th-10.webp" aria-label="Agrandir : Thermosiphon">
+            <img src="media/chantiers/mini/th-10.webp" width="818" height="600" loading="lazy" alt="Chauffe-eau solaire à thermosiphon : deux capteurs et un ballon">
+          </button>
+          <figcaption><span>Thermosiphon</span>Capteurs et ballon en toiture</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="th">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/th-video-1.mp4" aria-label="Agrandir : Capteurs plans">
+            <video src="media/chantiers/th-video-1.mp4" poster="media/chantiers/mini/th-video-1.webp" width="576" height="768" muted loop playsinline preload="none" aria-label="Vidéo : rangée de capteurs solaires plans en toiture"></video>
+            <span class="chantier-video" aria-hidden="true"><i class="ph ph-play"></i></span>
+          </button>
+          <figcaption><span>Capteurs plans</span>Vidéo du chantier</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="th">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/th-video-2.mp4" aria-label="Agrandir : Raccordement">
+            <video src="media/chantiers/th-video-2.mp4" poster="media/chantiers/mini/th-video-2.webp" width="368" height="496" muted loop playsinline preload="none" aria-label="Vidéo : raccordement des capteurs solaires en toiture"></video>
+            <span class="chantier-video" aria-hidden="true"><i class="ph ph-play"></i></span>
+          </button>
+          <figcaption><span>Raccordement</span>Vidéo : conduites et sondes</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="ch">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/ch-01.webp" aria-label="Agrandir : Distribution en plafond">
+            <img src="media/chantiers/mini/ch-01.webp" width="1010" height="600" loading="lazy" alt="Réseau de conduites métalliques en plafond d'un sous-sol">
+          </button>
+          <figcaption><span>Distribution en plafond</span>Réseau de conduites</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="ch">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/ch-02.webp" aria-label="Agrandir : Pose des conduites">
+            <img src="media/chantiers/mini/ch-02.webp" width="1010" height="600" loading="lazy" alt="Technicien en nacelle posant des conduites en plafond">
+          </button>
+          <figcaption><span>Pose des conduites</span>Travail en nacelle</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="ch">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/ch-03.webp" aria-label="Agrandir : Réseau en plafond">
+            <img src="media/chantiers/mini/ch-03.webp" width="1016" height="600" loading="lazy" alt="Conduites et câbles fixés au plafond">
+          </button>
+          <figcaption><span>Réseau en plafond</span>Conduites et chemins de câbles</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="ch">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/ch-04.webp" aria-label="Agrandir : Ballon de stockage">
+            <img src="media/chantiers/mini/ch-04.webp" width="600" height="800" loading="lazy" alt="Ballon de stockage gris raccordé dans un local technique">
+          </button>
+          <figcaption><span>Ballon de stockage</span>Raccordements hydrauliques</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="ch">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/ch-05.webp" aria-label="Agrandir : Local technique">
+            <img src="media/chantiers/mini/ch-05.webp" width="600" height="800" loading="lazy" alt="Local technique avec chaudière, circulateurs et ballon">
+          </button>
+          <figcaption><span>Local technique</span>Chaudière et circulateurs</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="ch">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/ch-06.webp" aria-label="Agrandir : Groupes hydrauliques">
+            <img src="media/chantiers/mini/ch-06.webp" width="600" height="800" loading="lazy" alt="Groupes hydrauliques avec manomètres et vannes en chaufferie">
+          </button>
+          <figcaption><span>Groupes hydrauliques</span>Manomètres et vannes</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="ch">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/ch-07.webp" aria-label="Agrandir : Tuyauterie">
+            <img src="media/chantiers/mini/ch-07.webp" width="600" height="800" loading="lazy" alt="Tuyauterie en acier et collecteurs en chaufferie">
+          </button>
+          <figcaption><span>Tuyauterie</span>Collecteurs en acier</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="ch">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/ch-08.webp" aria-label="Agrandir : Chaufferie">
+            <img src="media/chantiers/mini/ch-08.webp" width="600" height="800" loading="lazy" alt="Vue d'ensemble d'une chaufferie avec chaudière et ballon">
+          </button>
+          <figcaption><span>Chaufferie</span>Vue d'ensemble</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="ch">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/ch-09.webp" aria-label="Agrandir : Départs de chauffage">
+            <img src="media/chantiers/mini/ch-09.webp" width="600" height="800" loading="lazy" alt="Départs de chauffage à côté d'un ballon bleu">
+          </button>
+          <figcaption><span>Départs de chauffage</span>À côté du ballon tampon</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="ch">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/ch-10.webp" aria-label="Agrandir : Circulateurs">
+            <img src="media/chantiers/mini/ch-10.webp" width="600" height="800" loading="lazy" alt="Départs de chauffage avec circulateurs et manomètres">
+          </button>
+          <figcaption><span>Circulateurs</span>Départs équipés et isolés</figcaption>
+        </figure>
+        <figure class="chantier" data-cat="ch">
+          <button type="button" class="chantier-ouvrir" data-grand="media/chantiers/ch-video.mp4" aria-label="Agrandir : Chaufferie">
+            <video src="media/chantiers/ch-video.mp4" poster="media/chantiers/mini/ch-video.webp" width="368" height="496" muted loop playsinline preload="none" aria-label="Vidéo : chaufferie et groupes hydrauliques"></video>
+            <span class="chantier-video" aria-hidden="true"><i class="ph ph-play"></i></span>
+          </button>
+          <figcaption><span>Chaufferie</span>Vidéo du local technique</figcaption>
+        </figure>
+      </div>
+
+      <div class="chantiers-plus">
+        <button type="button" class="btn btn-outline" id="chantiersPlus"><i class="ph ph-images"></i> <span>Voir toutes les photos</span></button>
+      </div>
+    </div>
+
+    <dialog class="chantiers-visionneuse" id="chantiersVisionneuse" aria-label="Photo agrandie">
+      <button type="button" class="visionneuse-fermer" aria-label="Fermer"><i class="ph ph-x"></i></button>
+      <button type="button" class="visionneuse-nav visionneuse-prec" aria-label="Photo précédente"><i class="ph ph-caret-left"></i></button>
+      <figure class="visionneuse-cadre">
+        <div class="visionneuse-media"></div>
+        <figcaption class="visionneuse-legende"></figcaption>
+      </figure>
+      <button type="button" class="visionneuse-nav visionneuse-suiv" aria-label="Photo suivante"><i class="ph ph-caret-right"></i></button>
+    </dialog>
   </section>
 
 
@@ -7658,6 +8097,110 @@
         }
         ouvrir();
       });
+    })();
+  </script>
+  <script>
+    /* --- Nos chantiers en photos : filtres, « voir plus » et visionneuse --- */
+    (() => {
+      const grille = document.getElementById('chantiersGrille');
+      if (!grille) return;
+      const items = [...grille.querySelectorAll('.chantier')];
+      const filtres = [...document.querySelectorAll('.chantiers-filtre')];
+      const plus = document.getElementById('chantiersPlus');
+      const visionneuse = document.getElementById('chantiersVisionneuse');
+      const zone = visionneuse.querySelector('.visionneuse-media');
+      const legende = visionneuse.querySelector('.visionneuse-legende');
+      const PREMIERS = 12;
+      const mouvementReduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let filtre = 'tous';
+      let deplie = false;
+      let courant = 0;
+
+      const visibles = () => items.filter((it) => !it.hidden);
+
+      const afficher = () => {
+        const choisis = items.filter((it) => filtre === 'tous' || it.dataset.cat === filtre);
+        items.forEach((it) => { it.hidden = true; });
+        choisis.forEach((it, i) => { it.hidden = !deplie && i >= PREMIERS; });
+        plus.parentElement.hidden = deplie || choisis.length <= PREMIERS;
+        plus.querySelector('span').textContent = `Voir les ${choisis.length} photos`;
+        lireVideos();
+      };
+
+      // Les vidéos de la grille ne tournent que visibles à l'écran
+      const lireVideos = () => grille.querySelectorAll('video').forEach((v) => {
+        if (v.closest('.chantier').hidden || mouvementReduit) v.pause();
+      });
+      if ('IntersectionObserver' in window && !mouvementReduit) {
+        const obs = new IntersectionObserver((entrees) => entrees.forEach((e) => {
+          if (e.isIntersecting) e.target.play().catch(() => {}); else e.target.pause();
+        }), { threshold: 0.3 });
+        grille.querySelectorAll('video').forEach((v) => obs.observe(v));
+      }
+
+      filtres.forEach((b) => b.addEventListener('click', () => {
+        filtre = b.dataset.filtre;
+        deplie = false;
+        filtres.forEach((x) => {
+          x.classList.toggle('actif', x === b);
+          x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+        });
+        afficher();
+      }));
+
+      plus.addEventListener('click', () => { deplie = true; afficher(); });
+
+      const montrer = (i) => {
+        const liste = visibles();
+        courant = (i + liste.length) % liste.length;
+        const it = liste[courant];
+        const bouton = it.querySelector('.chantier-ouvrir');
+        const src = bouton.dataset.grand;
+        const vignette = bouton.querySelector('img, video');
+        const alt = vignette.getAttribute('alt') || vignette.getAttribute('aria-label') || '';
+        zone.innerHTML = '';
+        if (src.endsWith('.mp4')) {
+          const v = document.createElement('video');
+          Object.assign(v, { src, controls: true, loop: true, muted: true, playsInline: true, autoplay: true });
+          v.setAttribute('aria-label', alt);
+          zone.appendChild(v);
+        } else {
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = alt;
+          zone.appendChild(img);
+        }
+        legende.innerHTML = it.querySelector('figcaption').innerHTML;
+      };
+
+      grille.addEventListener('click', (e) => {
+        const bouton = e.target.closest('.chantier-ouvrir');
+        if (!bouton) return;
+        montrer(visibles().indexOf(bouton.closest('.chantier')));
+        visionneuse.showModal();
+      });
+
+      visionneuse.querySelector('.visionneuse-prec').addEventListener('click', () => montrer(courant - 1));
+      visionneuse.querySelector('.visionneuse-suiv').addEventListener('click', () => montrer(courant + 1));
+      visionneuse.querySelector('.visionneuse-fermer').addEventListener('click', () => visionneuse.close());
+      visionneuse.addEventListener('click', (e) => { if (e.target === visionneuse) visionneuse.close(); });
+      visionneuse.addEventListener('close', () => { zone.innerHTML = ''; });
+      visionneuse.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') montrer(courant - 1);
+        if (e.key === 'ArrowRight') montrer(courant + 1);
+      });
+
+      // Balayage sur mobile
+      let x0 = null;
+      visionneuse.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+      visionneuse.addEventListener('touchend', (e) => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 50) montrer(courant + (dx < 0 ? 1 : -1));
+        x0 = null;
+      });
+
+      afficher();
     })();
   </script>
 </body>

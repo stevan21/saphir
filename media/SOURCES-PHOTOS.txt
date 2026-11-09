@@ -118,3 +118,27 @@ Ce ne sont PAS des chantiers Saphir : les légendes décrivent l'activité.
         https://commons.wikimedia.org/wiki/File:Innovation_Africa_-_solar_panels.jpg
     pv-toiture-maison.webp   10  Roy Bury (CC0)
         https://commons.wikimedia.org/wiki/File:Solar_Energy_Roof_Solar_Power_Generation_2666770_CC0.jpg
+
+
+7. NOS CHANTIERS EN PHOTOS (section « Sur le terrain »)
+-------------------------------------------------------
+Photos et vidéos WhatsApp fournies par Saphir (dossier media/image saphir),
+converties dans media/chantiers/ (grand format) et media/chantiers/mini/
+(vignettes de la grille).
+    pv-01 à pv-13         photovoltaïque en toiture plate
+    th-01 à th-10         solaire thermique
+    th-video-1, th-video-2  vidéos de capteurs en toiture (son retiré)
+    ch-01 à ch-10         chaufferie, local technique, réseaux en plafond
+    ch-video              vidéo de chaufferie (son retiré)
+
+Non reprises sur le site :
+    - doublons : « 09.33.57 » (copie exacte de « 09.33.57 (1) »), et « 12.44.14 (3) » / « (4) » quasi
+      identiques à « 12.44.14 (2) »
+    - « 09.34.01 (2) » et « (3) » : mêmes photos que ch-01 et ch-02, avec
+      une légende espagnole « … instalpress » incrustée
+    - schémas et pages de texte « Pompe & Moteur » sur le surpresseur :
+      « 09.33.59 (1) », « 09.33.59 (2) », « 09.33.59 », « 09.34.00 (4) »
+
+Attention : ch-01 et ch-02 existent aussi avec la légende « instalpress »,
+ce qui laisse penser qu'elles viennent du site de ce fabricant. À vérifier ;
+pour les retirer, supprimer les deux <figure> correspondantes dans index.html.
